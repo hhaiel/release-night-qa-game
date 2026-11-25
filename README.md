@@ -4,7 +4,7 @@
 
 A browser game where each room teaches one real QA skill (DevTools, the console, API testing, authorization, boundary values, accessibility, defect reporting). After each room, a debrief explains the bug the way it would show up on a real project and how you'd report it.
 
-**Status:** in progress. Rooms 1–4 of 7 are playable. See [ROADMAP.md](ROADMAP.md).
+**Status:** in progress. Rooms 1–5 of 7 are playable. See [ROADMAP.md](ROADMAP.md).
 
 <!-- Live link, CI badge and screenshots go here in Phase 5. The rest of this README becomes the case study. -->
 

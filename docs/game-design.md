@@ -101,7 +101,7 @@ It's 23:47. Version 2.3 of the ShopRight store app ships at midnight. Everyone e
   - *Tester tip:* for every permission check, try the request as a lower role (or with the role value changed). Check cookies, localStorage, hidden fields and request bodies for anything that looks like `role`, `isAdmin` or `userId`.
 - **Build notes:** `api/session.ts` sets `sr_role=user` only if the cookie isn't there yet (so a reload doesn't undo the player's edit); `api/admin.ts` returns 403 `{ role }` or 200 with the panel and override code. The cookie helper is `api/_lib/cookies.ts`. Starting or restarting the game clears `sr_role`, so a replay starts locked. The code is not in the client bundle (checked after build).
 
-### Room 5: Checkout Gate
+### Room 5: Checkout Gate (built)
 - **Room id:** `checkout-gate`
 - **Screen:** ShopRight **Checkout**. Cart: one Midnight Hoodie, $40.00. There's a **Staff discount (%)** field. Entering more than 100 shows "Discount must be between 0 and 100" and the Pay button is disabled.
 - **Briefing:** "Finance asked one thing: make sure nobody can get paid to shop. Check the discount field."
@@ -112,7 +112,8 @@ It's 23:47. Version 2.3 of the ShopRight store app ships at midnight. Everyone e
   - Firefox: right-click the request › Edit and Resend.
 - **Door:** the confirmation shows "Order confirmed. ShopRight owes you $0.40. Refund reference: REF-101-NEG"; enter the reference at the keypad.
 - **Answer:** `REF-101-NEG` *(placeholder)*. Ignores case, spaces and dashes.
-- **Server behavior:** 0–99 normal order, 100 free order, over 100 negative total plus the refund reference, below 0 or not a number returns 400. (Below 0 is handled correctly on purpose, so the player has to find the right boundary.)
+- **Server behavior (`api/checkout.ts`, POST only):** 0–99 normal order, 100 free order, over 100 negative total plus the refund reference (the same reference for any value over 100), below 0, non-numbers (including the string `"50"`), `null`, a missing field or bad JSON return 400. Decimals are allowed (12.5 → $35.00). Below 0 is handled correctly on purpose, so the player has to find the right boundary.
+- **Build notes:** removing only `disabled` isn't enough: the browser's own `max="100"` check still blocks the form, so the player has to deal with both (or skip the UI and resend the request). React doesn't put the attributes back after they're edited, because their values never change between renders. The reference is not in the client bundle (checked after build).
 - **Hints:**
   1. The browser says no. Does the server agree?
   2. Try 100 first and watch the request in the Network tab. Then find a way to send 101.

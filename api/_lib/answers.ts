@@ -45,6 +45,12 @@ const ANSWERS: Record<string, RoomAnswer> = {
     normalize: codeNormalize,
     hash: '8f0a803bdbf43d8f3be4c833ca00e7a5ab7f1a8de1ee97b22d8e61104f693a2b',
   },
+
+  // Room 5: the refund reference returned when checkout accepts a discount over 100%.
+  'checkout-gate': {
+    normalize: codeNormalize,
+    hash: '75905eada3db0f691f66e8a73389adf21e60ee1c3da24014c13d888139466ee3',
+  },
 };
 
 export function isKnownRoom(room: string): boolean {

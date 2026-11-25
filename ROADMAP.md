@@ -44,7 +44,7 @@ Build one room at a time. For each: component in `src/rooms/`, add it to `ROOMS`
 - [x] Shared door keypad for rooms that open with a code (`src/components/DoorKeypad.tsx`)
 - [x] Room 3 API Vault: an endpoint returns `200 OK` with an error and the code hidden in the JSON body (`api/orders.ts`)
 - [x] Room 4 Storage Closet: admin panel trusts an `sr_role=user` cookie; the server checks the cookie, so editing it in DevTools opens the door
-- [ ] Room 5 Checkout Gate: discount field blocks >100 in the browser only; the server accepts 101% and the store "pays you"
+- [x] Room 5 Checkout Gate: discount field blocks >100 in the browser only; the server accepts 101% and the store "pays you"
 - [ ] Room 6 Dark Room: exit button has no accessible name and near-invisible contrast; findable with Tab or the accessibility tree
 
 **Done when:** you can play Rooms 1–6 start to finish.
