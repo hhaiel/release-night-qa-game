@@ -144,11 +144,11 @@ It's 23:47. Version 2.3 of the ShopRight store app ships at midnight. Everyone e
 - **Build notes:** this room must fail axe on purpose. The Playwright suite asserts that it fails with these exact rules (`button-name`, `color-contrast`). `color-contrast` comes from the low-contrast notice text at the top (an icon-only button has no text for axe to measure); `button-name` comes from the exit. The exit is the first focusable element in the page, so one Tab from the HUD reaches it. A faint flashlight follows the mouse for atmosphere but doesn't make the button visible. Clicking the decoy sign shows "It's just a sign." The code is built from character codes; "LUMEN" isn't in the bundle (checked after build).
 - **Final hints (as built):** (2) Tab into the page; when focus seems to vanish, check `document.activeElement` or Elements. (3) Press Enter on the unnamed button, then find the `aria-live` element.
 
-### Room 7: The Release Board (final boss)
+### Room 7: The Release Board (final boss, built)
 - **Room id:** `release-board`
 - **Screen:** a Jira-style "Release v2.3" board. One card says **BLOCKER: needs a bug report**. Clicking it opens a bug report form.
 - **Briefing:** "You found the bugs. Now make them stop the release. The release manager only accepts a proper bug report."
-- **Form fields:** which bug (dropdown of the rooms you cleared), title, severity, category, steps to reproduce (one per line), expected result, actual result.
+- **Form fields:** which bug (dropdown of all six bugs), title, severity, category, steps to reproduce (one per line), expected result, actual result.
 - **Scoring (server-side, `POST /api/report`, out of 100):**
 
   | Check | Points |
@@ -160,15 +160,17 @@ It's 23:47. Version 2.3 of the ShopRight store app ships at midnight. Everyone e
   | Category is reasonable for the chosen bug | 10 |
   | Actual result mentions what the player observed (keyword check per bug, e.g. "comment", "200", "cookie") | 20 |
 
-- **Door:** 70 or more blocks the release ("v2.3 has been pulled from tonight's release"). Under 70, the server returns which checks failed, and the player can edit and resubmit.
+- **Door:** 70 or more blocks the release. Under 70, the server returns every check with points and a tip, and the form keeps what the player typed so they can fix it and resubmit. On a pass, "Pull the release" solves the room (the door animation says "Release blocked") and goes straight to the ending screen instead of a debrief.
+- **Build notes:** `POST /api/report` (rules and keywords in `api/_lib/report-rules.ts`, server-side only). Title gets 7 of 15 if the length is right but it doesn't name the feature; steps get 10 of 20 for exactly 2 lines. Expected/actual each need 10+ characters. Category list adds Accessibility. 400 for bad JSON, a missing/non-string field, an unknown bug or an over-long field. Tested: a strong report scores 100, a vague one 62 and 37, an empty one 0.
 - **Hints:**
   1. Look back at a debrief. The sample reports show every field you need.
   2. A developer should be able to reproduce it from your steps alone. Write one action per line.
   3. Expected is what *should* happen; actual is what *did* happen. Put what you saw in DevTools in the actual result.
 - **Debrief:** replaced by the ending screen: score, rank, time, hints used, and a list of every bug the player found.
 
-### Ending screen
-- Final rank, total score, time, hints used.
+### Ending screen (built)
+- Final rank, total score (counts up), time, clock at finish, hints used, bug report score.
+- Score breakdown per room with hint deductions and the midnight bonus.
 - "Bugs you found tonight": the 6 bugs with their severity.
 - Buttons: Play again, View the source on GitHub.
 
@@ -192,13 +194,15 @@ It's 23:47. Version 2.3 of the ShopRight store app ships at midnight. Everyone e
 
 A wrong answer is a normal result, not an error, so it returns 200. (Room 3's API is the deliberately broken one.)
 
-## Scoring (draft, change it if you like)
+## Scoring (as built)
 - **Rooms 1–6:** 1000 points each.
 - **Hints:** −100 each (up to −300 per room). Already shown in the game.
 - **Room 7:** the report score × 10 (70–100 becomes 700–1000).
 - **Before-midnight bonus:** +500 if you finish Room 7 before the clock reads 00:00.
 - **Maximum:** 7500.
-- **Clock:** runs at half speed, so the 13 game minutes to midnight take 26 real minutes, and it pauses while the tab is hidden. (Right now it runs at real speed and never pauses. Change `src/lib/time.ts` when building the ending.)
+- **Clock:** runs at half speed (`GAME_SPEED = 0.5` in `src/lib/time.ts`), so the 13 game minutes to midnight take 26 real minutes. It stops when Room 7 is solved, and the top bar then shows BLOCKED. It does not pause while the tab is hidden yet (still on the roadmap).
+- **After midnight:** you keep playing; the top bar shows `MIDNIGHT +mm:ss`, you lose the 500 bonus, and Release Blocker is out of reach.
+- **Code:** `src/game/score.ts` (scores and ranks), `src/components/Ending.tsx` (ending screen).
 
 | Rank | Score |
 |---|---|

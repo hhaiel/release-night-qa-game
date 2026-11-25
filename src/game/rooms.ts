@@ -5,11 +5,12 @@ import { apiVault } from '../rooms/ApiVault';
 import { storageCloset } from '../rooms/StorageCloset';
 import { checkoutGate } from '../rooms/CheckoutGate';
 import { darkRoom } from '../rooms/DarkRoom';
+import { releaseBoard } from '../rooms/ReleaseBoard';
 
 /** Rooms that are built, in play order. */
-export const ROOMS: RoomDefinition[] = [loginLobby, consoleCorridor, apiVault, storageCloset, checkoutGate, darkRoom];
+export const ROOMS: RoomDefinition[] = [loginLobby, consoleCorridor, apiVault, storageCloset, checkoutGate, darkRoom, releaseBoard];
 
-/** The full plan, including rooms that aren't built yet. */
+/** The full plan, used for the door icons in the top bar. */
 export const ROOM_PLAN: PlannedRoom[] = [
   { number: 1, title: 'Login Lobby', skill: 'Reading the page in DevTools (Elements)' },
   { number: 2, title: 'Console Corridor', skill: 'Checking the console' },

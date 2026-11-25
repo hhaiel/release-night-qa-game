@@ -6,10 +6,12 @@ import { Hud, type DoorState } from './components/Hud';
 import { HintPanel } from './components/HintPanel';
 import { DoorUnlock } from './components/DoorUnlock';
 import { Debrief } from './components/Debrief';
-import { ComingSoon } from './components/ComingSoon';
 import { BrowserFrame } from './components/BrowserFrame';
 import { Briefing } from './components/Briefing';
 import { DoorKeypad } from './components/DoorKeypad';
+import { Ending } from './components/Ending';
+import { FINAL_ROOM_ID } from './game/score';
+import type { SolveResult } from './game/types';
 
 export default function App() {
   const { progress, start, reset, enterRoom, takeHint, solveRoom, nextRoom } = useProgress();
@@ -22,11 +24,14 @@ export default function App() {
     if (progress.startedAt && room) enterRoom(room.id);
   }, [progress.startedAt, room, enterRoom]);
 
-  const handleSolved = useCallback(() => {
-    if (!room) return;
-    solveRoom(room.id);
-    setUnlocking(true);
-  }, [room, solveRoom]);
+  const handleSolved = useCallback(
+    (result?: SolveResult) => {
+      if (!room) return;
+      solveRoom(room.id, result?.reportScore);
+      setUnlocking(true);
+    },
+    [room, solveRoom],
+  );
 
   const handleUnlocked = useCallback(() => setUnlocking(false), []);
 
@@ -48,12 +53,24 @@ export default function App() {
   const hintsUsed = Object.values(progress.rooms).reduce((sum, r) => sum + r.hintsUsed, 0);
 
   let content;
+  const isFinal = room?.id === FINAL_ROOM_ID;
   if (!room || !roomProgress) {
-    content = <ComingSoon plan={ROOM_PLAN} builtCount={ROOMS.length} onReset={reset} />;
+    // Past the last room (e.g. an older save): show the ending.
+    content = <Ending rooms={ROOMS} progress={progress} onPlayAgain={reset} />;
   } else if (unlocking) {
-    content = <DoorUnlock roomNumber={room.number} onDone={handleUnlocked} />;
+    content = (
+      <DoorUnlock
+        roomNumber={room.number}
+        label={isFinal ? 'Release blocked' : undefined}
+        onDone={handleUnlocked}
+      />
+    );
   } else if (roomProgress.solvedAt) {
-    content = <Debrief room={room} progress={roomProgress} onContinue={nextRoom} />;
+    content = isFinal ? (
+      <Ending rooms={ROOMS} progress={progress} onPlayAgain={reset} />
+    ) : (
+      <Debrief room={room} progress={roomProgress} onContinue={nextRoom} />
+    );
   } else {
     const RoomComponent = room.Component;
     content = (
@@ -84,7 +101,13 @@ export default function App() {
 
   return (
     <>
-      <Hud startedAt={progress.startedAt} doors={doors} hintsUsed={hintsUsed} onReset={reset} />
+      <Hud
+        startedAt={progress.startedAt}
+        endedAt={progress.rooms[FINAL_ROOM_ID]?.solvedAt}
+        doors={doors}
+        hintsUsed={hintsUsed}
+        onReset={reset}
+      />
       <main className="shell">{content}</main>
     </>
   );

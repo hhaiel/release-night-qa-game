@@ -15,6 +15,7 @@ QA portfolio project: **Release Night**, an escape-room game where every door is
 - Answers are checked on the server. Store only hashes in `api/_lib/answers.ts` (`npm run hash-answer -- <room-id> "<answer>"`). Never put a room's answer in client code unless finding it in the page *is* the puzzle (Room 1).
 - Rooms contain deliberate bugs. Don't "fix" them. Bugs in the game itself go in the defect log.
 - The fake ShopRight app inside a room uses the light `.fake-app` styles; the game frame is dark.
+- Room 7 (`release-board`) is the last room: it calls `onSolved({ reportScore })`, and the app shows the ending screen instead of a debrief. Scoring lives in `src/game/score.ts`.
 
 ## API
 - Each file in `api/` exports one function per HTTP method taking a web `Request` and returning a `Response` (Vercel Functions format). `vite.config.ts` runs these during `npm run dev`. Files in `api/_lib/` are helpers, not endpoints.

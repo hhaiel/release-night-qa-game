@@ -1,8 +1,15 @@
 import type { ComponentType } from 'react';
 
 export interface RoomProps {
-  /** Call this once the player has found the bug and opened the door. */
-  onSolved: () => void;
+  /**
+   * Call this once the player has found the bug and opened the door.
+   * Room 7 also passes the score its bug report got (0–100).
+   */
+  onSolved: (result?: SolveResult) => void;
+}
+
+export interface SolveResult {
+  reportScore?: number;
 }
 
 export interface BugReport {

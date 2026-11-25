@@ -2,11 +2,13 @@ import { useEffect } from 'react';
 
 interface Props {
   roomNumber: number;
+  /** Big text once the door opens. Defaults to "Access granted". */
+  label?: string;
   onDone: () => void;
 }
 
 /** Short "access granted" animation between solving a room and its debrief. */
-export function DoorUnlock({ roomNumber, onDone }: Props) {
+export function DoorUnlock({ roomNumber, label = 'Access granted', onDone }: Props) {
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const id = setTimeout(onDone, reduced ? 700 : 2200);
@@ -27,7 +29,7 @@ export function DoorUnlock({ roomNumber, onDone }: Props) {
       </div>
       <p className="vault__text">
         <span className="vault__room">Door {String(roomNumber).padStart(2, '0')}</span>
-        Access granted
+        {label}
       </p>
     </div>
   );

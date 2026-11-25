@@ -50,9 +50,10 @@ Build one room at a time. For each: component in `src/rooms/`, add it to `ROOMS`
 **Done when:** you can play Rooms 1–6 start to finish.
 
 ## Phase 3: Room 7 + polish (3–4 days)
-- [ ] Room 7 The Release Board: write a bug report for one bug you found; score it on required fields (title, steps, expected, actual, severity)
-- [ ] Scoring and ranks on an ending screen
-- [ ] Pause the clock when the tab is closed (right now it keeps running from `startedAt`)
+- [x] Room 7 The Release Board: write a bug report for one bug you found; scored by `POST /api/report` (rules in `api/_lib/report-rules.ts`)
+- [x] Scoring and ranks on an ending screen (`src/game/score.ts`, `src/components/Ending.tsx`)
+- [x] Clock runs at half speed (13 game minutes = 26 real minutes; `GAME_SPEED` in `src/lib/time.ts`) and stops when the release is blocked
+- [ ] Pause the clock when the tab is closed (right now it keeps running from `startedAt`; also lets a player reload to dodge nothing, but closing the tab costs time)
 - [ ] Sound effects (off by default, with a mute toggle)
 - [ ] Mobile layout check
 - [ ] Social preview image and page title for sharing

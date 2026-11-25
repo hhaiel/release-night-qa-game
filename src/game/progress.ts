@@ -6,6 +6,8 @@ export interface RoomProgress {
   enteredAt?: number;
   solvedAt?: number;
   hintsUsed: number;
+  /** Room 7 only: the bug report's score out of 100. */
+  reportScore?: number;
 }
 
 export interface Progress {
@@ -71,7 +73,8 @@ export function useProgress() {
       [updateRoom],
     ),
     solveRoom: useCallback(
-      (roomId: string) => updateRoom(roomId, (r) => (r.solvedAt ? r : { ...r, solvedAt: Date.now() })),
+      (roomId: string, reportScore?: number) =>
+        updateRoom(roomId, (r) => (r.solvedAt ? r : { ...r, solvedAt: Date.now(), reportScore })),
       [updateRoom],
     ),
     nextRoom: useCallback(() => setProgress((p) => ({ ...p, currentRoom: p.currentRoom + 1 })), []),

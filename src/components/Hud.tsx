@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
-import { gameClock, SECONDS_UNTIL_RELEASE } from '../lib/time';
+import { gameClock, gameSeconds, SECONDS_UNTIL_RELEASE } from '../lib/time';
 
 export type DoorState = 'cleared' | 'current' | 'locked';
 
 interface Props {
   startedAt: number;
+  /** When the game ended. The clock stops here. */
+  endedAt?: number;
   doors: { number: number; title: string; state: DoorState }[];
   hintsUsed: number;
   onReset: () => void;
@@ -16,15 +18,16 @@ function formatCountdown(seconds: number): string {
   return `${String(m).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
 }
 
-export function Hud({ startedAt, doors, hintsUsed, onReset }: Props) {
+export function Hud({ startedAt, endedAt, doors, hintsUsed, onReset }: Props) {
   const [now, setNow] = useState(Date.now());
   useEffect(() => {
+    if (endedAt) return;
     const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [endedAt]);
 
-  const elapsed = now - startedAt;
-  const remaining = SECONDS_UNTIL_RELEASE - Math.floor(elapsed / 1000);
+  const elapsed = (endedAt ?? now) - startedAt;
+  const remaining = SECONDS_UNTIL_RELEASE - gameSeconds(elapsed);
   const late = remaining <= 0;
   const urgent = !late && remaining <= 120;
 
@@ -60,12 +63,18 @@ export function Hud({ startedAt, doors, hintsUsed, onReset }: Props) {
         <span className="hud__stat hud__stat--clock" aria-label="Game clock">
           <span className="hud__stat-label">Clock</span> {gameClock(elapsed)}
         </span>
-        <span
-          className={`hud__countdown${urgent ? ' hud__countdown--urgent' : ''}${late ? ' hud__countdown--late' : ''}`}
-          aria-label={late ? 'Version 2.3 has shipped' : 'Time until release'}
-        >
-          {late ? `SHIPPED +${formatCountdown(remaining)}` : `T−${formatCountdown(remaining)}`}
-        </span>
+        {endedAt ? (
+          <span className="hud__countdown hud__countdown--blocked" aria-label="Release blocked">
+            BLOCKED
+          </span>
+        ) : (
+          <span
+            className={`hud__countdown${urgent ? ' hud__countdown--urgent' : ''}${late ? ' hud__countdown--late' : ''}`}
+            aria-label={late ? 'Midnight has passed' : 'Time until release'}
+          >
+            {late ? `MIDNIGHT +${formatCountdown(remaining)}` : `T−${formatCountdown(remaining)}`}
+          </span>
+        )}
         <button className="btn btn--ghost btn--small" onClick={handleReset}>
           Restart
         </button>
