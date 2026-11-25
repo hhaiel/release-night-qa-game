@@ -22,16 +22,19 @@ Phase 5  Deploy + case-study README   1–2 days
 - [x] Game shell: intro, HUD with game clock, room view, hints, door-unlock animation, debrief, "coming soon" screen
 - [x] Progress saved in `localStorage` (refresh keeps your place; **Restart** clears it)
 - [x] Room 1 (Login Lobby) playable end to end
-- [ ] `git init`, first commit, create a **public** GitHub repo, push
+- [x] `git init` and first commit
+- [ ] Create a **public** GitHub repo and push
 
 **Done when:** you've played Room 1 yourself and it's on GitHub.
 
 ## Phase 1: Game design on paper (1 day)
 - [ ] Read [docs/game-design.md](docs/game-design.md) and change anything you'd do differently
-- [ ] For each of Rooms 2–6: write the exact answer, the 3 hints, and the debrief bug report
-- [ ] Decide scoring: points per room, hint cost (currently 100), time bonus
-- [ ] Decide the rank thresholds ("Junior Tester" → "Release Blocker")
-- [ ] Decide what the clock does after midnight (right now it turns red and says "v2.3 shipped", and you can keep playing)
+- [x] Draft Rooms 2–7: answer, 3 hints, debrief bug report (in the design doc, marked "Draft for review")
+- [ ] Review the draft and swap any placeholder answers for your own
+- [x] Draft scoring: points per room, hint cost, before-midnight bonus
+- [ ] Approve or change the scoring
+- [x] Draft rank thresholds ("Intern on Their First Day" → "Release Blocker")
+- [x] Draft clock rules: half speed, pauses when the tab is hidden; after midnight you keep playing but lose the bonus
 
 **Done when:** every room has an answer, 3 hints and a debrief written down.
 
