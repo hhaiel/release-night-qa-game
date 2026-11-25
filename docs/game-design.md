@@ -53,7 +53,7 @@ It's 23:47. Version 2.3 of the ShopRight store app ships at midnight. Everyone e
   - *Tester tip:* keep the console open during every test session. Paste the full error text and the trace ID into the bug report; it saves the developer an hour.
 - **Build notes:** the code is meant to be found in the client, like Room 1. It's built from character codes, so searching the JS bundle for `TRC-` or `7Q4M` finds nothing (checked after build). The TypeError is a real one (the cart is keyed by product id, the code looks up by SKU) and is reported with `reportError()` so it shows as "Uncaught". The code is typed into the shared door keypad (`src/components/DoorKeypad.tsx`).
 
-### Room 3: API Vault
+### Room 3: API Vault (built)
 - **Room id:** `api-vault`
 - **Screen:** ShopRight **Order history** page. It shows a friendly empty state: "No orders yet. Start shopping!"
 - **Briefing:** "A customer says their order history is empty. They've ordered 40 times. Support says the page 'loads fine'."
@@ -74,14 +74,14 @@ It's 23:47. Version 2.3 of the ShopRight store app ships at midnight. Everyone e
 - **Answer:** `VAULT-0412` *(placeholder)*. Ignores case and spaces.
 - **Hints:**
   1. "Loads fine" and "works" aren't the same thing. What did the page actually receive?
-  2. Open DevTools > Network, reload the room, and click the `orders` request.
+  2. Open DevTools > Network, then click **Refresh** on the page (or reload), and click the `orders` request.
   3. Open the Response (or Preview) tab of that request and read the whole body, not just the status.
 - **Debrief:**
   - *What was wrong:* the API returned a success status for a failure, and the UI hid the failure behind an empty state.
   - *Why it matters:* monitoring counts 200s as healthy, so the outage is invisible to dashboards and alerts. The debug field leaks internal details to anyone.
   - *Report:* "Order history: API returns 200 OK with an error body; UI shows 'No orders yet'". Severity **High**, Category **Error**. Expected: a 5xx status and an error message on screen ("We couldn't load your orders"). Actual: 200 OK, error hidden, debug data in the response.
   - *Tester tip:* in API testing, assert on the body as well as the status code. A 200 is not a pass.
-- **Build notes:** new endpoint `api/orders.ts`. Its code will be readable in the public repo. That's an accepted trade-off (anyone can also see it by playing). If you want it unspoilable later, generate the code per player from a secret environment variable.
+- **Build notes:** endpoint `api/orders.ts` (GET only; waits ~650 ms so the loading skeleton shows; also sends `x-request-id`). The page has a Refresh button so players don't need to reload. The code is not in the client bundle (checked after build), only in the API response. Its code will be readable in the public repo. That's an accepted trade-off (anyone can also see it by playing). If you want it unspoilable later, generate the code per player from a secret environment variable.
 
 ### Room 4: Storage Closet
 - **Room id:** `storage-closet`

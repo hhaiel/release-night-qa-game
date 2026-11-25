@@ -1,9 +1,10 @@
 import type { PlannedRoom, RoomDefinition } from './types';
 import { loginLobby } from '../rooms/LoginLobby';
 import { consoleCorridor } from '../rooms/ConsoleCorridor';
+import { apiVault } from '../rooms/ApiVault';
 
 /** Rooms that are built, in play order. */
-export const ROOMS: RoomDefinition[] = [loginLobby, consoleCorridor];
+export const ROOMS: RoomDefinition[] = [loginLobby, consoleCorridor, apiVault];
 
 /** The full plan, including rooms that aren't built yet. */
 export const ROOM_PLAN: PlannedRoom[] = [

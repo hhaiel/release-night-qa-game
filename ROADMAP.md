@@ -42,7 +42,7 @@ Phase 5  Deploy + case-study README   1–2 days
 Build one room at a time. For each: component in `src/rooms/`, add it to `ROOMS` in `src/game/rooms.ts`, add its answer hash with `npm run hash-answer -- <room-id> "<answer>"`, play it, then write its test cases.
 - [x] Room 2 Console Corridor: page "works" but the console logs an error that contains the code
 - [x] Shared door keypad for rooms that open with a code (`src/components/DoorKeypad.tsx`)
-- [ ] Room 3 API Vault: an endpoint returns `200 OK` with an error and the code hidden in the JSON body (new file in `api/`)
+- [x] Room 3 API Vault: an endpoint returns `200 OK` with an error and the code hidden in the JSON body (`api/orders.ts`)
 - [ ] Room 4 Storage Closet: admin panel trusts a `role=user` cookie; the server checks the cookie, so editing it in DevTools opens the door
 - [ ] Room 5 Checkout Gate: discount field blocks >100 in the browser only; the server accepts 101% and the store "pays you"
 - [ ] Room 6 Dark Room: exit button has no accessible name and near-invisible contrast; findable with Tab or the accessibility tree
@@ -84,3 +84,4 @@ Build one room at a time. For each: component in `src/rooms/`, add it to `ROOMS`
 These are real bugs in the game. Good first entries for the defect log in Phase 4.
 - Progress is stored in `localStorage` with no checks, so a player can edit `currentRoom` to skip rooms.
 - The clock keeps running while the tab is closed.
+- *(Fixed while building Room 3)* The local dev API crashed with Vite's "aborted" error overlay when the browser cancelled a GET request (React's dev mode does this on purpose). Cause: `vite.config.ts` waited for a request body on GET. Good example of a defect found, fixed and retested.

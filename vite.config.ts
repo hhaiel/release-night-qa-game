@@ -36,17 +36,22 @@ function devApi(): Plugin {
             return res.end(JSON.stringify({ error: 'Method not allowed' }));
           }
 
+          // GET and HEAD have no body, so don't wait on one (that also avoids an error
+          // when the browser cancels the request, which React's dev mode does on purpose).
           const chunks: Buffer[] = [];
-          for await (const chunk of req) chunks.push(chunk as Buffer);
+          if (method !== 'GET' && method !== 'HEAD') {
+            for await (const chunk of req) chunks.push(chunk as Buffer);
+          }
           const headers = new Headers();
           for (const [key, value] of Object.entries(req.headers)) {
             if (Array.isArray(value)) value.forEach((v) => headers.append(key, v));
             else if (value !== undefined) headers.set(key, value);
           }
-          const hasBody = method !== 'GET' && method !== 'HEAD' && chunks.length > 0;
-          const request = new Request(url, { method, headers, body: hasBody ? Buffer.concat(chunks) : undefined });
+          const body = chunks.length > 0 ? Buffer.concat(chunks) : undefined;
+          const request = new Request(url, { method, headers, body });
 
           const response = await handler(request);
+          if (res.writableEnded || res.destroyed) return; // the browser gave up waiting; nothing to send
           res.statusCode = response.status;
           response.headers.forEach((value, key) => {
             if (key !== 'set-cookie') res.setHeader(key, value);
@@ -55,6 +60,8 @@ function devApi(): Plugin {
           if (cookies.length) res.setHeader('set-cookie', cookies);
           res.end(Buffer.from(await response.arrayBuffer()));
         } catch (error) {
+          // A request the browser cancelled isn't a server error. Don't show Vite's error overlay for it.
+          if (req.destroyed || (error as Error).message === 'aborted') return;
           server.ssrFixStacktrace(error as Error);
           next(error);
         }

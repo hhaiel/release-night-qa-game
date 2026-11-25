@@ -33,6 +33,12 @@ const ANSWERS: Record<string, RoomAnswer> = {
     normalize: codeNormalize,
     hash: 'cd8bfff99c914797c2414f71b3012af8cc084e6ed5de2ae176fda2894e438c6c',
   },
+
+  // Room 3: the override code leaked in the body of GET /api/orders.
+  'api-vault': {
+    normalize: codeNormalize,
+    hash: 'faad772c3263e90320f2f85db429d6beffc1619a3571db77b2020587dbe0d004',
+  },
 };
 
 export function isKnownRoom(room: string): boolean {
