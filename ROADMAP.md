@@ -53,7 +53,7 @@ Build one room at a time. For each: component in `src/rooms/`, add it to `ROOMS`
 - [x] Room 7 The Release Board: write a bug report for one bug you found; scored by `POST /api/report` (rules in `api/_lib/report-rules.ts`)
 - [x] Scoring and ranks on an ending screen (`src/game/score.ts`, `src/components/Ending.tsx`)
 - [x] Clock runs at half speed (13 game minutes = 26 real minutes; `GAME_SPEED` in `src/lib/time.ts`) and stops when the release is blocked
-- [ ] Pause the clock when the tab is closed (right now it keeps running from `startedAt`; also lets a player reload to dodge nothing, but closing the tab costs time)
+- [ ] Pause the clock when the tab is closed (right now it keeps running from `startedAt`, so closing the tab still costs game time)
 - [ ] Sound effects (off by default, with a mute toggle)
 - [ ] Mobile layout check
 - [ ] Social preview image and page title for sharing
