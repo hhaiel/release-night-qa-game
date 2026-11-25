@@ -40,7 +40,8 @@ Phase 5  Deploy + case-study README   1–2 days
 
 ## Phase 2: Rooms 2–6 (5–7 days)
 Build one room at a time. For each: component in `src/rooms/`, add it to `ROOMS` in `src/game/rooms.ts`, add its answer hash with `npm run hash-answer -- <room-id> "<answer>"`, play it, then write its test cases.
-- [ ] Room 2 Console Corridor: page "works" but the console logs an error that contains the code
+- [x] Room 2 Console Corridor: page "works" but the console logs an error that contains the code
+- [x] Shared door keypad for rooms that open with a code (`src/components/DoorKeypad.tsx`)
 - [ ] Room 3 API Vault: an endpoint returns `200 OK` with an error and the code hidden in the JSON body (new file in `api/`)
 - [ ] Room 4 Storage Closet: admin panel trusts a `role=user` cookie; the server checks the cookie, so editing it in DevTools opens the door
 - [ ] Room 5 Checkout Gate: discount field blocks >100 in the browser only; the server accepts 101% and the store "pays you"

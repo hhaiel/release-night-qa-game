@@ -35,6 +35,18 @@ export interface RoomDefinition {
   hints: [string, string, string];
   debrief: Debrief;
   Component: ComponentType<RoomProps>;
+  /**
+   * A keypad under the room where the player types the code they found.
+   * Leave it out when the room itself is the door (Room 1's login form).
+   */
+  door?: DoorConfig;
+}
+
+export interface DoorConfig {
+  /** What the keypad asks for, e.g. "Trace ID of the failure". */
+  prompt: string;
+  /** Example of the format, shown greyed out in the input. */
+  placeholder: string;
 }
 
 /** A room that's planned but not built yet. Shown on the "coming soon" screen. */

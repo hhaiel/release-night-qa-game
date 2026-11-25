@@ -9,6 +9,7 @@ import { Debrief } from './components/Debrief';
 import { ComingSoon } from './components/ComingSoon';
 import { BrowserFrame } from './components/BrowserFrame';
 import { Briefing } from './components/Briefing';
+import { DoorKeypad } from './components/DoorKeypad';
 
 export default function App() {
   const { progress, start, reset, enterRoom, takeHint, solveRoom, nextRoom } = useProgress();
@@ -69,9 +70,12 @@ export default function App() {
         </div>
         <Briefing text={room.briefing} roomNumber={room.number} />
         <div className="room__layout">
-          <BrowserFrame url={room.url}>
-            <RoomComponent onSolved={handleSolved} />
-          </BrowserFrame>
+          <div className="room__main">
+            <BrowserFrame url={room.url}>
+              <RoomComponent onSolved={handleSolved} />
+            </BrowserFrame>
+            {room.door && <DoorKeypad key={room.id} roomId={room.id} door={room.door} onSolved={handleSolved} />}
+          </div>
           <HintPanel hints={room.hints} used={roomProgress.hintsUsed} onTakeHint={() => takeHint(room.id)} />
         </div>
       </div>

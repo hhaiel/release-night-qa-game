@@ -33,7 +33,7 @@ It's 23:47. Version 2.3 of the ShopRight store app ships at midnight. Everyone e
 
 > **Draft for review.** Rooms 2–7 below are a first draft. Change anything you'd do differently before it gets built. Answers marked *(placeholder)* can be swapped for your own.
 
-### Room 2: Console Corridor
+### Room 2: Console Corridor (built)
 - **Room id:** `console-corridor`
 - **Screen:** ShopRight product page for a "Midnight Hoodie". **Add to cart** shows a green "Added to cart!" toast, but the cart count in the header stays at 0.
 - **Briefing:** "QA signed off on Add to Cart this morning. It says it works. Does it?"
@@ -51,7 +51,7 @@ It's 23:47. Version 2.3 of the ShopRight store app ships at midnight. Everyone e
   - *Why it matters:* customers think items are in their cart and lose them at checkout. Nobody notices in a demo because the toast looks right.
   - *Report:* "Product page: Add to cart shows success but the item isn't added (TypeError in console)". Severity **High**, Category **Functional**. Steps: open the product page, open the Console, click Add to cart, check the cart count. Expected: count goes to 1 and no errors. Actual: toast shows, count stays 0, TypeError logged.
   - *Tester tip:* keep the console open during every test session. Paste the full error text and the trace ID into the bug report; it saves the developer an hour.
-- **Build notes:** the code is meant to be found in the client, like Room 1. Build the string from parts so a quick search of the JS bundle doesn't show it whole.
+- **Build notes:** the code is meant to be found in the client, like Room 1. It's built from character codes, so searching the JS bundle for `TRC-` or `7Q4M` finds nothing (checked after build). The TypeError is a real one (the cart is keyed by product id, the code looks up by SKU) and is reported with `reportError()` so it shows as "Uncaught". The code is typed into the shared door keypad (`src/components/DoorKeypad.tsx`).
 
 ### Room 3: API Vault
 - **Room id:** `api-vault`

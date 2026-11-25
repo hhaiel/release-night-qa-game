@@ -9,6 +9,8 @@ QA portfolio project: **Release Night**, an escape-room game where every door is
 
 ## Rooms
 - One file per room in `src/rooms/`, exporting a `RoomDefinition` (component, briefing, 3 hints, debrief). Register it in `ROOMS` in `src/game/rooms.ts`.
+- Rooms that open with a code set `door: { prompt, placeholder }`; the app shows the shared `DoorKeypad` under the room. Rooms that are their own door (Room 1's login) leave `door` out and call `onSolved` themselves.
+- If a room's code has to live in client code, build it so a search of the built bundle doesn't find it, and keep it out of the debrief text. Check with `grep` on `dist/assets/*.js` after `npm run build`.
 - Room ids are kebab-case (`login-lobby`). The same id is used in the API and in `localStorage`.
 - Answers are checked on the server. Store only hashes in `api/_lib/answers.ts` (`npm run hash-answer -- <room-id> "<answer>"`). Never put a room's answer in client code unless finding it in the page *is* the puzzle (Room 1).
 - Rooms contain deliberate bugs. Don't "fix" them. Bugs in the game itself go in the defect log.

@@ -1777,3 +1777,325 @@ strong {
     flex: 1;
   }
 }
+
+/* =========================================================
+   Door keypad (under rooms that open with a code)
+   ========================================================= */
+.room__main {
+  display: grid;
+  gap: 1.1rem;
+  min-width: 0;
+}
+
+.keypad {
+  display: flex;
+  gap: 1.2rem;
+  align-items: stretch;
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(255, 181, 71, 0.3);
+  border-radius: var(--radius);
+  background:
+    repeating-linear-gradient(-45deg, transparent 0 10px, rgba(255, 181, 71, 0.03) 10px 20px),
+    var(--panel);
+  box-shadow: 0 20px 50px -25px rgba(0, 0, 0, 0.8);
+  transition: border-color 0.2s ease;
+}
+
+.keypad--denied,
+.keypad--error {
+  border-color: rgba(255, 92, 108, 0.55);
+}
+
+.keypad__plate {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 0.5rem;
+  min-width: 4.5rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--line);
+}
+
+.keypad__led {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #2a3242;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.keypad__led--amber {
+  background: var(--amber);
+  box-shadow: 0 0 12px var(--amber-glow);
+  animation: blink 0.5s steps(2, start) infinite;
+}
+
+.keypad__led--red {
+  background: var(--red);
+  box-shadow: 0 0 14px var(--red-glow);
+}
+
+.keypad__label {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  text-align: center;
+}
+
+.keypad__field {
+  flex: 1;
+  min-width: 0;
+}
+
+.keypad__field label {
+  display: block;
+  margin-bottom: 0.45rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.keypad__row {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.keypad__row input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.45);
+  color: var(--amber-hi);
+  font-family: var(--mono);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.keypad__row input::placeholder {
+  color: var(--text-faint);
+}
+
+.keypad__row input:focus {
+  outline: none;
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px rgba(255, 181, 71, 0.18);
+}
+
+.keypad__status {
+  min-height: 1.3rem;
+  margin: 0.45rem 0 0;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--red);
+}
+
+@media (max-width: 600px) {
+  .keypad__plate {
+    display: none;
+  }
+  .keypad__row {
+    flex-direction: column;
+  }
+}
+
+/* =========================================================
+   Room 2: ShopRight product page
+   ========================================================= */
+.shop {
+  position: relative;
+  overflow: hidden;
+}
+
+.shop__nav {
+  display: flex;
+  gap: 1.3rem;
+  font-size: 0.85rem;
+  color: #57606a;
+}
+
+.shop__cart {
+  position: relative;
+  display: inline-flex;
+  color: #1f2328;
+}
+
+.shop__cart-count {
+  position: absolute;
+  top: -7px;
+  right: -9px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background: #0b5cad;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
+
+.shop__crumbs {
+  padding: 0.8rem 1.5rem 0;
+  font-size: 0.78rem;
+  color: #6e7781;
+}
+
+.shop__product {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 1.8rem;
+  padding: 1rem 1.5rem 2rem;
+}
+
+@media (max-width: 640px) {
+  .shop__product {
+    grid-template-columns: 1fr;
+  }
+  .shop__nav {
+    display: none;
+  }
+}
+
+.shop__image {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  background: radial-gradient(circle at 50% 40%, #ffffff, #e6e9ef);
+  border: 1px solid #d8dde4;
+}
+
+.shop__image svg {
+  width: 78%;
+}
+
+.shop__tag {
+  position: absolute;
+  top: 0.7rem;
+  left: 0.7rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  background: #1f2328;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.shop__details h2 {
+  margin: 0.2rem 0 0.2rem;
+  font-family: inherit;
+  font-size: 1.5rem;
+}
+
+.shop__price {
+  margin: 0 0 0.8rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0b5cad;
+}
+
+.shop__desc {
+  margin: 0 0 1.1rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: #57606a;
+}
+
+.shop__sizes {
+  display: flex;
+  gap: 0.45rem;
+  margin: 0 0 1.2rem;
+  padding: 0;
+  border: none;
+}
+
+.shop__sizes legend {
+  margin-bottom: 0.45rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.shop__sizes label {
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.3rem;
+  border: 1px solid #c4cad2;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: #fff;
+}
+
+.shop__sizes label.is-selected {
+  border-color: #1f2328;
+  box-shadow: inset 0 0 0 1px #1f2328;
+}
+
+.shop__sizes input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.shop__sizes label:has(input:focus-visible) {
+  outline: 3px solid #0b5cad;
+  outline-offset: 2px;
+}
+
+.shop__add {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  background: #0b5cad;
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.shop__add:hover {
+  background: #0a4f95;
+}
+
+.shop__ship {
+  margin: 0.6rem 0 0;
+  font-size: 0.78rem;
+  color: #6e7781;
+  text-align: center;
+}
+
+.shop__toast {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  background: #1a7f37;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  animation: toast-in 0.25s ease-out;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}

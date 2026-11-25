@@ -11,6 +11,11 @@ interface RoomAnswer {
   hash: string;
 }
 
+/** For door codes like "TRC-7Q4M-2B": ignore case and any spaces. */
+function codeNormalize(raw: string): string {
+  return raw.replace(/\s+/g, '').toUpperCase();
+}
+
 const ANSWERS: Record<string, RoomAnswer> = {
   // Room 1: the player logs in with the test account a developer left in an HTML comment.
   // Answer format "username:password". Usernames ignore case and spaces; passwords are exact.
@@ -21,6 +26,12 @@ const ANSWERS: Record<string, RoomAnswer> = {
       return `${raw.slice(0, i).trim().toLowerCase()}:${raw.slice(i + 1)}`;
     },
     hash: 'e486617c01fc0cc0a969591ff0652650550604da8dd8577d32057446892866e5',
+  },
+
+  // Room 2: the trace ID logged to the console when Add to cart fails.
+  'console-corridor': {
+    normalize: codeNormalize,
+    hash: 'cd8bfff99c914797c2414f71b3012af8cc084e6ed5de2ae176fda2894e438c6c',
   },
 };
 
