@@ -23,7 +23,7 @@ Phase 5  Deploy + case-study README   1–2 days
 - [x] Progress saved in `localStorage` (refresh keeps your place; **Restart** clears it)
 - [x] Room 1 (Login Lobby) playable end to end
 - [x] `git init` and first commit
-- [ ] Create a **public** GitHub repo and push
+- [x] Create a **public** GitHub repo and push ([hhaiel/release-night-qa-game](https://github.com/hhaiel/release-night-qa-game))
 
 **Done when:** you've played Room 1 yourself and it's on GitHub.
 
