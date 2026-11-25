@@ -1,0 +1,588 @@
+/* ---------- Game frame: late-night terminal ---------- */
+:root {
+  --bg: #0d1117;
+  --bg-raised: #161b22;
+  --bg-sunken: #010409;
+  --line: #30363d;
+  --text: #e6edf3;
+  --text-dim: #9da7b3;
+  --accent: #f0883e;
+  --accent-strong: #ffa657;
+  --danger: #ff7b72;
+  --ok: #56d364;
+  --mono: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+  --sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  color-scheme: dark;
+  font-family: var(--sans);
+  line-height: 1.55;
+  color: var(--text);
+  background: var(--bg);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at top, rgba(240, 136, 62, 0.07), transparent 60%),
+    var(--bg);
+}
+
+h1,
+h2 {
+  line-height: 1.2;
+}
+
+.contents {
+  display: contents;
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  font: inherit;
+  font-weight: 600;
+  border-radius: 6px;
+  padding: 0.65rem 1.2rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.btn:focus-visible,
+.fake-app :focus-visible {
+  outline: 3px solid var(--accent-strong);
+  outline-offset: 2px;
+}
+
+.btn--primary {
+  background: var(--accent);
+  color: #1a0f00;
+}
+
+.btn--primary:hover {
+  background: var(--accent-strong);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--line);
+}
+
+.btn--ghost:hover {
+  border-color: var(--text-dim);
+}
+
+.btn--small {
+  padding: 0.3rem 0.7rem;
+  font-size: 0.85rem;
+}
+
+/* ---------- Layout ---------- */
+.shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+.shell--center {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+/* ---------- HUD ---------- */
+.hud {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.6rem 1.25rem;
+  background: rgba(1, 4, 9, 0.92);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 0.9rem;
+}
+
+.hud__title {
+  font-weight: 700;
+  color: var(--accent-strong);
+}
+
+.hud__room {
+  color: var(--text-dim);
+}
+
+.hud__clock {
+  margin-left: auto;
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.hud__clock--late {
+  color: var(--danger);
+}
+
+.hud__shipped {
+  font-size: 0.8rem;
+}
+
+/* ---------- Intro ---------- */
+.intro {
+  max-width: 620px;
+}
+
+.intro__time {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 1rem;
+  color: var(--danger);
+  animation: blink 1.2s steps(2, start) infinite;
+}
+
+.intro h1 {
+  margin: 0.25rem 0 1rem;
+  font-size: clamp(2.5rem, 7vw, 4rem);
+  letter-spacing: -0.02em;
+}
+
+.intro__lead {
+  font-size: 1.15rem;
+}
+
+.intro__rules {
+  margin: 1.5rem 0 2rem;
+  padding: 1rem 1rem 1rem 2.25rem;
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text-dim);
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+/* ---------- Room ---------- */
+.room__briefing {
+  margin: 0 0 1.5rem;
+  max-width: 70ch;
+  font-size: 1.05rem;
+}
+
+.room__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 820px) {
+  .room__layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.room__stage {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* ---------- Hints ---------- */
+.hints {
+  padding: 1rem 1.1rem;
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.hints h2 {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+}
+
+.hints__list {
+  margin: 0 0 1rem;
+  padding-left: 1.2rem;
+  font-size: 0.95rem;
+}
+
+.hints__list li + li {
+  margin-top: 0.6rem;
+}
+
+.hints .btn {
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+.hints__none {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+/* ---------- Door unlock ---------- */
+.door {
+  position: relative;
+  height: 420px;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: radial-gradient(circle, rgba(86, 211, 100, 0.25), var(--bg-sunken) 70%);
+  display: grid;
+  place-items: center;
+}
+
+.door__panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  background: repeating-linear-gradient(0deg, #1c2128 0 22px, #22272e 22px 24px);
+  animation: 1.4s ease-in 0.3s forwards;
+}
+
+.door__panel--left {
+  left: 0;
+  border-right: 2px solid var(--ok);
+  animation-name: slide-left;
+}
+
+.door__panel--right {
+  right: 0;
+  border-left: 2px solid var(--ok);
+  animation-name: slide-right;
+}
+
+.door__text {
+  position: relative;
+  font-family: var(--mono);
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ok);
+  opacity: 0;
+  animation: fade-in 0.6s ease-out 0.9s forwards;
+}
+
+@keyframes slide-left {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes slide-right {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes fade-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .door__panel {
+    display: none;
+  }
+  .door__text {
+    opacity: 1;
+    animation: none;
+  }
+  .intro__time {
+    animation: none;
+  }
+}
+
+/* ---------- Debrief ---------- */
+.debrief {
+  max-width: 760px;
+}
+
+.debrief h1 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+}
+
+.debrief h2 {
+  margin: 1.75rem 0 0.4rem;
+  font-size: 1.05rem;
+  color: var(--accent-strong);
+}
+
+.debrief p {
+  margin: 0;
+}
+
+.debrief__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+.report {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.6rem 1.25rem;
+  margin: 0.75rem 0 0;
+  padding: 1.1rem 1.25rem;
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.report dt {
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.report dd {
+  margin: 0;
+}
+
+.report ol {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+@media (max-width: 600px) {
+  .report {
+    grid-template-columns: 1fr;
+  }
+  .report dd {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.sev {
+  display: inline-block;
+  padding: 0.05rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.sev--critical {
+  background: rgba(255, 123, 114, 0.18);
+  color: var(--danger);
+}
+.sev--high {
+  background: rgba(240, 136, 62, 0.18);
+  color: var(--accent-strong);
+}
+.sev--medium {
+  background: rgba(210, 153, 34, 0.18);
+  color: #e3b341;
+}
+.sev--low {
+  background: rgba(86, 211, 100, 0.15);
+  color: var(--ok);
+}
+
+.tip {
+  margin: 2rem 0;
+  padding: 1rem 1.25rem;
+  border-left: 3px solid var(--accent);
+  background: rgba(240, 136, 62, 0.07);
+  border-radius: 0 8px 8px 0;
+}
+
+.tip h2 {
+  margin-top: 0;
+}
+
+/* ---------- Coming soon ---------- */
+.coming-soon {
+  max-width: 680px;
+}
+
+.plan {
+  list-style: none;
+  margin: 1.5rem 0 2rem;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.plan li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1rem;
+  padding: 0.75rem 1rem;
+}
+
+.plan li + li {
+  border-top: 1px solid var(--line);
+}
+
+.plan__title {
+  font-weight: 600;
+}
+
+.plan__skill {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+.plan__badge {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--ok);
+}
+
+.plan li:not(.plan__done) .plan__title {
+  color: var(--text-dim);
+}
+
+/* ---------- The fake store app inside each room ----------
+   Deliberately plain and "corporate" so it reads as the app under test, not the game. */
+.fake-app {
+  color-scheme: light;
+  background: #f4f5f7;
+  color: #1f2328;
+  font-family: var(--sans);
+  min-height: 420px;
+}
+
+.fake-app__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 1.25rem;
+  background: #ffffff;
+  border-bottom: 1px solid #d0d7de;
+}
+
+.fake-app__logo {
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #0b5cad;
+}
+
+.fake-app__env {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  padding: 0.15rem 0.5rem;
+  background: #fff8c5;
+  color: #6b5100;
+  border-radius: 4px;
+}
+
+.fake-app__body {
+  display: grid;
+  place-items: center;
+  padding: 2.5rem 1rem;
+}
+
+.login-card {
+  width: min(360px, 100%);
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem;
+  background: #ffffff;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.login-card h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.3rem;
+}
+
+.login-card__sub {
+  margin: 0 0 1.25rem;
+  font-size: 0.875rem;
+  color: #57606a;
+}
+
+.login-card label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.login-card input {
+  font: inherit;
+  padding: 0.5rem 0.65rem;
+  margin-bottom: 1rem;
+  border: 1px solid #8c959f;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #1f2328;
+}
+
+.login-card button {
+  font: inherit;
+  font-weight: 600;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 6px;
+  background: #0b5cad;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.login-card button:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.login-card__error {
+  margin: -0.25rem 0 1rem;
+  padding: 0.5rem 0.65rem;
+  font-size: 0.875rem;
+  background: #ffebe9;
+  color: #a40e26;
+  border: 1px solid #ffcecb;
+  border-radius: 6px;
+}
+
+.login-card__foot {
+  margin: 1rem 0 0;
+  font-size: 0.8rem;
+  color: #57606a;
+  text-align: center;
+}
+
+.login-card__foot span {
+  text-decoration: underline;
+}
+
+.debrief h1:focus {
+  outline: none;
+}
