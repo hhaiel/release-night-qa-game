@@ -11,9 +11,9 @@ interface RoomAnswer {
   hash: string;
 }
 
-/** For door codes like "TRC-7Q4M-2B": ignore case and any spaces. */
+/** For door codes like "TRC-7Q4M-2B": ignore case, spaces and dashes. Hash the code with no dashes. */
 function codeNormalize(raw: string): string {
-  return raw.replace(/\s+/g, '').toUpperCase();
+  return raw.replace(/[\s-]+/g, '').toUpperCase();
 }
 
 const ANSWERS: Record<string, RoomAnswer> = {
@@ -31,13 +31,19 @@ const ANSWERS: Record<string, RoomAnswer> = {
   // Room 2: the trace ID logged to the console when Add to cart fails.
   'console-corridor': {
     normalize: codeNormalize,
-    hash: 'cd8bfff99c914797c2414f71b3012af8cc084e6ed5de2ae176fda2894e438c6c',
+    hash: '713b649901d4dd61bff8a9dc064eb8c0fdaefa86387f001741ed510e1f646508',
   },
 
   // Room 3: the override code leaked in the body of GET /api/orders.
   'api-vault': {
     normalize: codeNormalize,
-    hash: 'faad772c3263e90320f2f85db429d6beffc1619a3571db77b2020587dbe0d004',
+    hash: '797a33b27c1024616d94846f9371fdb97e828a96378c1af58be66d2b45f382b2',
+  },
+
+  // Room 4: the release override code shown in the admin panel once sr_role=admin.
+  'storage-closet': {
+    normalize: codeNormalize,
+    hash: '8f0a803bdbf43d8f3be4c833ca00e7a5ab7f1a8de1ee97b22d8e61104f693a2b',
   },
 };
 

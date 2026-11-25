@@ -41,7 +41,7 @@ It's 23:47. Version 2.3 of the ShopRight store app ships at midnight. Everyone e
   - `Uncaught TypeError: Cannot read properties of undefined (reading 'qty')`
   - `[cart] sync failed. Report this trace ID to the on-call dev: TRC-7Q4M-2B`
 - **Door:** a keypad asking for "the trace ID of the failure the release lead needs".
-- **Answer:** `TRC-7Q4M-2B` *(placeholder)*. Ignores case and spaces.
+- **Answer:** `TRC-7Q4M-2B` *(placeholder)*. Ignores case, spaces and dashes.
 - **Hints:**
   1. The screen says success. Is the screen the only thing you can trust?
   2. Press F12 and open the Console tab, then click Add to cart again.
@@ -71,7 +71,7 @@ It's 23:47. Version 2.3 of the ShopRight store app ships at midnight. Everyone e
   ```
   Two bugs in one: the wrong status code (should be 5xx), and internal debug data leaked to the client.
 - **Door:** keypad asking for "the override code".
-- **Answer:** `VAULT-0412` *(placeholder)*. Ignores case and spaces.
+- **Answer:** `VAULT-0412` *(placeholder)*. Ignores case, spaces and dashes.
 - **Hints:**
   1. "Loads fine" and "works" aren't the same thing. What did the page actually receive?
   2. Open DevTools > Network, then click **Refresh** on the page (or reload), and click the `orders` request.
@@ -83,13 +83,13 @@ It's 23:47. Version 2.3 of the ShopRight store app ships at midnight. Everyone e
   - *Tester tip:* in API testing, assert on the body as well as the status code. A 200 is not a pass.
 - **Build notes:** endpoint `api/orders.ts` (GET only; waits ~650 ms so the loading skeleton shows; also sends `x-request-id`). The page has a Refresh button so players don't need to reload. The code is not in the client bundle (checked after build), only in the API response. Its code will be readable in the public repo. That's an accepted trade-off (anyone can also see it by playing). If you want it unspoilable later, generate the code per player from a secret environment variable.
 
-### Room 4: Storage Closet
+### Room 4: Storage Closet (built)
 - **Room id:** `storage-closet`
 - **Screen:** ShopRight **Admin › Release controls**. It shows "Access denied. Admins only." and a **Retry** button.
 - **Briefing:** "The kill switch for the release is in the admin panel. You're not an admin. Or are you?"
 - **Bug:** when the room loads, the server sets a cookie `sr_role=user` (not HttpOnly, not signed). `GET /api/admin` decides who's an admin by reading that cookie. Change it to `admin`, click Retry, and the panel opens.
 - **Door:** the admin panel shows a **Release override code**; enter it at the keypad.
-- **Answer:** `OVR-88-KILO` *(placeholder)*. Ignores case and spaces.
+- **Answer:** `OVR-88-KILO` *(placeholder)*. Ignores case, spaces and dashes.
 - **Hints:**
   1. How does the server know who you are? Something in your browser tells it.
   2. DevTools > Application (Chrome) or Storage (Firefox) > Cookies. Look at what's stored for this site.
@@ -99,7 +99,7 @@ It's 23:47. Version 2.3 of the ShopRight store app ships at midnight. Everyone e
   - *Why it matters:* any customer can make themselves an admin. This is broken access control, number 1 in the OWASP Top 10.
   - *Report:* "Admin panel: access granted by editing the client-side `sr_role` cookie". Severity **Critical**, Category **Security**. Expected: the server checks the role from the authenticated session; editing a cookie changes nothing. Actual: setting `sr_role=admin` opens the admin panel.
   - *Tester tip:* for every permission check, try the request as a lower role (or with the role value changed). Check cookies, localStorage, hidden fields and request bodies for anything that looks like `role`, `isAdmin` or `userId`.
-- **Build notes:** new endpoints `api/session.ts` (sets the cookie) and `api/admin.ts` (reads it). The dev server already passes cookies through.
+- **Build notes:** `api/session.ts` sets `sr_role=user` only if the cookie isn't there yet (so a reload doesn't undo the player's edit); `api/admin.ts` returns 403 `{ role }` or 200 with the panel and override code. The cookie helper is `api/_lib/cookies.ts`. Starting or restarting the game clears `sr_role`, so a replay starts locked. The code is not in the client bundle (checked after build).
 
 ### Room 5: Checkout Gate
 - **Room id:** `checkout-gate`
@@ -111,7 +111,7 @@ It's 23:47. Version 2.3 of the ShopRight store app ships at midnight. Everyone e
   - in the Network tab, copy the checkout request as fetch, change `"discount": 100` to `101`, and run it in the Console, or
   - Firefox: right-click the request › Edit and Resend.
 - **Door:** the confirmation shows "Order confirmed. ShopRight owes you $0.40. Refund reference: REF-101-NEG"; enter the reference at the keypad.
-- **Answer:** `REF-101-NEG` *(placeholder)*. Ignores case and spaces.
+- **Answer:** `REF-101-NEG` *(placeholder)*. Ignores case, spaces and dashes.
 - **Server behavior:** 0–99 normal order, 100 free order, over 100 negative total plus the refund reference, below 0 or not a number returns 400. (Below 0 is handled correctly on purpose, so the player has to find the right boundary.)
 - **Hints:**
   1. The browser says no. Does the server agree?
@@ -130,7 +130,7 @@ It's 23:47. Version 2.3 of the ShopRight store app ships at midnight. Everyone e
 - **Bug:** the exit button has no accessible name, almost no contrast, and no visible focus. Screen readers announce it as just "button".
 - **How the player finds it:** press Tab and watch which element gets focus in Elements, or use the Accessibility pane / full accessibility tree in DevTools.
 - **Door:** pressing the button puts a message in a visually hidden `aria-live` region: "Emergency exit code: LUMEN-6". Screen readers read it aloud; sighted players find it in Elements or the accessibility tree. Enter it at the keypad.
-- **Answer:** `LUMEN-6` *(placeholder)*. Ignores case and spaces.
+- **Answer:** `LUMEN-6` *(placeholder)*. Ignores case, spaces and dashes.
 - **Hints:**
   1. Not everyone uses a mouse or can see the screen. How would they get out?
   2. Click the page, then press Tab a few times. Watch Elements to see which element has focus.
@@ -174,6 +174,7 @@ It's 23:47. Version 2.3 of the ShopRight store app ships at midnight. Everyone e
 - Answers are checked on the server so they can't be read from the game's JavaScript.
 - `api/_lib/answers.ts` stores only `sha256("<room-id>:<normalized answer>")`. Each room has its own `normalize` function (e.g. lowercase the username).
 - Add a hash with `npm run hash-answer -- <room-id> "<normalized answer>"`.
+- Door codes (Rooms 2–6) ignore case, spaces and dashes: `trc 7q4m 2b`, `TRC7Q4M2B` and `TRC-7Q4M-2B` all work. Hash the code uppercase with no dashes (e.g. `TRC7Q4M2B`).
 - Room 1 is a special case: the answer is meant to be found in the page, so it's in the client code on purpose.
 
 ### `POST /api/check`

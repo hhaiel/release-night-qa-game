@@ -43,7 +43,7 @@ Build one room at a time. For each: component in `src/rooms/`, add it to `ROOMS`
 - [x] Room 2 Console Corridor: page "works" but the console logs an error that contains the code
 - [x] Shared door keypad for rooms that open with a code (`src/components/DoorKeypad.tsx`)
 - [x] Room 3 API Vault: an endpoint returns `200 OK` with an error and the code hidden in the JSON body (`api/orders.ts`)
-- [ ] Room 4 Storage Closet: admin panel trusts a `role=user` cookie; the server checks the cookie, so editing it in DevTools opens the door
+- [x] Room 4 Storage Closet: admin panel trusts an `sr_role=user` cookie; the server checks the cookie, so editing it in DevTools opens the door
 - [ ] Room 5 Checkout Gate: discount field blocks >100 in the browser only; the server accepts 101% and the store "pays you"
 - [ ] Room 6 Dark Room: exit button has no accessible name and near-invisible contrast; findable with Tab or the accessibility tree
 
@@ -85,3 +85,5 @@ These are real bugs in the game. Good first entries for the defect log in Phase 
 - Progress is stored in `localStorage` with no checks, so a player can edit `currentRoom` to skip rooms.
 - The clock keeps running while the tab is closed.
 - *(Fixed while building Room 3)* The local dev API crashed with Vite's "aborted" error overlay when the browser cancelled a GET request (React's dev mode does this on purpose). Cause: `vite.config.ts` waited for a request body on GET. Good example of a defect found, fixed and retested.
+- *(Fixed while building Room 4)* Door codes typed with spaces instead of dashes (`ovr 88 kilo`) were rejected, though the design says spaces don't matter. Cause: the normalizer removed spaces but kept dashes. Now both are ignored; all 4 rooms retested with 12 answer variations.
+- *(Fixed while building Room 4)* After Restart, the `sr_role=admin` cookie stayed, so Room 4 was already open on a replay. Now cleared on start and restart.

@@ -17,6 +17,14 @@ export interface Progress {
 
 const EMPTY: Progress = { currentRoom: 0, rooms: {} };
 
+/**
+ * Clears cookies that rooms set (Room 4's sr_role), so a replay starts locked again.
+ * Only works because that cookie isn't HttpOnly, which is part of Room 4's bug.
+ */
+function clearRoomCookies() {
+  document.cookie = 'sr_role=; Max-Age=0; Path=/';
+}
+
 function load(): Progress {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -46,8 +54,14 @@ export function useProgress() {
 
   return {
     progress,
-    start: useCallback(() => setProgress({ ...EMPTY, startedAt: Date.now() }), []),
-    reset: useCallback(() => setProgress(EMPTY), []),
+    start: useCallback(() => {
+      clearRoomCookies();
+      setProgress({ ...EMPTY, startedAt: Date.now() });
+    }, []),
+    reset: useCallback(() => {
+      clearRoomCookies();
+      setProgress(EMPTY);
+    }, []),
     enterRoom: useCallback(
       (roomId: string) => updateRoom(roomId, (r) => (r.enteredAt ? r : { ...r, enteredAt: Date.now() })),
       [updateRoom],
