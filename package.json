@@ -11,6 +11,8 @@
     "hash-answer": "node scripts/hash-answer.mjs"
   },
   "dependencies": {
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@fontsource-variable/space-grotesk": "^5.3.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   },

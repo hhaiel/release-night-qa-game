@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useProgress } from './game/progress';
-import { ROOMS, ROOM_PLAN, TOTAL_ROOMS } from './game/rooms';
+import { ROOMS, ROOM_PLAN } from './game/rooms';
 import { Intro } from './components/Intro';
-import { Hud } from './components/Hud';
+import { Hud, type DoorState } from './components/Hud';
 import { HintPanel } from './components/HintPanel';
 import { DoorUnlock } from './components/DoorUnlock';
 import { Debrief } from './components/Debrief';
 import { ComingSoon } from './components/ComingSoon';
+import { BrowserFrame } from './components/BrowserFrame';
+import { Briefing } from './components/Briefing';
 
 export default function App() {
   const { progress, start, reset, enterRoom, takeHint, solveRoom, nextRoom } = useProgress();
@@ -29,17 +31,26 @@ export default function App() {
 
   if (!progress.startedAt) {
     return (
-      <main className="shell shell--center">
+      <main className="shell shell--intro">
         <Intro onStart={start} />
       </main>
     );
   }
 
+  const doors = ROOM_PLAN.map((planned, i) => {
+    const built = ROOMS[i];
+    const solved = built ? Boolean(progress.rooms[built.id]?.solvedAt) : false;
+    const state: DoorState =
+      solved || i < progress.currentRoom ? 'cleared' : i === progress.currentRoom ? 'current' : 'locked';
+    return { number: planned.number, title: planned.title, state };
+  });
+  const hintsUsed = Object.values(progress.rooms).reduce((sum, r) => sum + r.hintsUsed, 0);
+
   let content;
   if (!room || !roomProgress) {
     content = <ComingSoon plan={ROOM_PLAN} builtCount={ROOMS.length} onReset={reset} />;
   } else if (unlocking) {
-    content = <DoorUnlock onDone={handleUnlocked} />;
+    content = <DoorUnlock roomNumber={room.number} onDone={handleUnlocked} />;
   } else if (roomProgress.solvedAt) {
     content = <Debrief room={room} progress={roomProgress} onContinue={nextRoom} />;
   } else {
@@ -47,15 +58,20 @@ export default function App() {
     content = (
       <div className="room">
         <div className="room__header">
-          <p className="eyebrow">
-            Room {room.number} · {room.title}
-          </p>
-          <p className="room__briefing">{room.briefing}</p>
-        </div>
-        <div className="room__layout">
-          <div className="room__stage">
-            <RoomComponent onSolved={handleSolved} />
+          <span className="room__number" aria-hidden="true">
+            {String(room.number).padStart(2, '0')}
+          </span>
+          <div className="room__heading">
+            <p className="eyebrow">Room {room.number} of {ROOM_PLAN.length}</p>
+            <h1 className="room__title">{room.title}</h1>
+            <span className="chip chip--skill">{room.skill}</span>
           </div>
+        </div>
+        <Briefing text={room.briefing} roomNumber={room.number} />
+        <div className="room__layout">
+          <BrowserFrame url={room.url}>
+            <RoomComponent onSolved={handleSolved} />
+          </BrowserFrame>
           <HintPanel hints={room.hints} used={roomProgress.hintsUsed} onTakeHint={() => takeHint(room.id)} />
         </div>
       </div>
@@ -64,12 +80,7 @@ export default function App() {
 
   return (
     <>
-      <Hud
-        startedAt={progress.startedAt}
-        roomNumber={progress.currentRoom + 1}
-        totalRooms={TOTAL_ROOMS}
-        onReset={reset}
-      />
+      <Hud startedAt={progress.startedAt} doors={doors} hintsUsed={hintsUsed} onReset={reset} />
       <main className="shell">{content}</main>
     </>
   );

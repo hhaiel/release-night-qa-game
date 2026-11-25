@@ -94,6 +94,7 @@ export const loginLobby: RoomDefinition = {
   number: 1,
   title: 'Login Lobby',
   skill: 'Reading the page in DevTools (Elements)',
+  url: 'staging.shopright.app/login',
   briefing:
     'Your QA account was deleted in this afternoon’s "cleanup". The staging login is the first door. Find another way in.',
   hints: [

@@ -28,7 +28,9 @@ export interface RoomDefinition {
   number: number;
   title: string;
   skill: string;
-  /** One or two lines of story shown above the room. */
+  /** Fake address shown in the browser frame around the room, e.g. staging.shopright.app/login */
+  url: string;
+  /** One or two lines of story, shown as a chat message from the release manager. */
   briefing: string;
   hints: [string, string, string];
   debrief: Debrief;
