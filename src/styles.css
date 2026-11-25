@@ -2796,3 +2796,120 @@ strong {
   font-weight: 600;
   cursor: pointer;
 }
+
+/* =========================================================
+   Room 6: the Dark Room (power's out)
+   The low contrast and missing focus outline here are THE BUG.
+   This room must fail axe on purpose. Don't fix it.
+   ========================================================= */
+.dark-room {
+  position: relative;
+  overflow: hidden;
+  min-height: 440px;
+  background: radial-gradient(ellipse at 50% 30%, #101010, #0a0a0a 70%);
+  color: #2e2e2e;
+  color-scheme: dark;
+  cursor: crosshair;
+}
+
+.dark-room__flashlight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle 130px at var(--lx, 50%) var(--ly, 40%),
+    rgba(255, 244, 214, 0.05),
+    transparent 70%
+  );
+}
+
+.dark-room__notice {
+  position: absolute;
+  top: 1rem;
+  left: 1.2rem;
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: #2e2e2e;
+}
+
+.dark-room__sign {
+  position: absolute;
+  top: 2.6rem;
+  right: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.8rem;
+  border: 2px solid #1b5e35;
+  border-radius: 4px;
+  background: #06180e;
+  color: #3ee08f;
+  font-family: var(--display);
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-shadow: 0 0 12px rgba(62, 224, 143, 0.8);
+  box-shadow:
+    0 0 30px rgba(62, 224, 143, 0.25),
+    inset 0 0 12px rgba(62, 224, 143, 0.15);
+  cursor: pointer;
+  animation: flicker 5s infinite;
+}
+
+@keyframes flicker {
+  0%,
+  18%,
+  22%,
+  25%,
+  53%,
+  57%,
+  100% {
+    opacity: 1;
+  }
+  20%,
+  24%,
+  55% {
+    opacity: 0.35;
+  }
+}
+
+.dark-room__sign-note {
+  position: absolute;
+  top: 6rem;
+  right: 2rem;
+  margin: 0;
+  font-size: 0.75rem;
+  color: #3a3a3a;
+}
+
+.dark-room__furniture {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 62%;
+  fill: #0e0e0e;
+}
+
+.dark-room__exit {
+  position: absolute;
+  left: 1.4rem;
+  bottom: 1.4rem;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 1px solid #121212;
+  border-radius: 6px;
+  background: #0d0d0d;
+  color: #151515;
+  cursor: crosshair;
+}
+
+.dark-room__exit:focus,
+.dark-room__exit:focus-visible {
+  outline: none;
+}

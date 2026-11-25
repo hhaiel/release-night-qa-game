@@ -124,7 +124,7 @@ It's 23:47. Version 2.3 of the ShopRight store app ships at midnight. Everyone e
   - *Report:* "Checkout: server accepts discount over 100%, giving a negative total and a refund". Severity **Critical**, Category **Functional**. Steps include the exact request body. Expected: the server rejects discounts above 100 with a 400. Actual: the order is accepted with a total of −$0.40.
   - *Tester tip:* for any number field, test the boundaries: −1, 0, 1, 99, 100, 101, a decimal, a huge number and an empty value. Then repeat the invalid ones against the API directly, skipping the UI.
 
-### Room 6: Dark Room
+### Room 6: Dark Room (built)
 - **Room id:** `dark-room`
 - **Screen:** the power has gone out. The ShopRight page is almost black. A big glowing **EXIT** sign is a decoy (an image; clicking it does nothing). The real exit is a `<button>` with only an SVG icon, no text, no `aria-label`, colored `#111` on `#0d0d0d`, and its focus outline removed.
 - **Briefing:** "Power's out on the third floor. The exit is somewhere on this screen. Your eyes won't help."
@@ -141,7 +141,8 @@ It's 23:47. Version 2.3 of the ShopRight store app ships at midnight. Everyone e
   - *Why it matters:* keyboard and screen reader users can't find or understand the control. In many places this is also a legal requirement.
   - *Report:* "Dark Room: exit button has no accessible name, insufficient contrast and no focus indicator". Severity **High**, Category **UI/Display**. Expected: visible text or `aria-label` "Exit", contrast at least 4.5:1, visible focus. Actual: announced as "button", contrast about 1.1:1, focus invisible.
   - *Tester tip:* do one pass of every page with only the keyboard, and run axe or Lighthouse. Both take five minutes.
-- **Build notes:** this room must fail axe on purpose. The Playwright suite asserts that it fails with these exact rules (`button-name`, `color-contrast`).
+- **Build notes:** this room must fail axe on purpose. The Playwright suite asserts that it fails with these exact rules (`button-name`, `color-contrast`). `color-contrast` comes from the low-contrast notice text at the top (an icon-only button has no text for axe to measure); `button-name` comes from the exit. The exit is the first focusable element in the page, so one Tab from the HUD reaches it. A faint flashlight follows the mouse for atmosphere but doesn't make the button visible. Clicking the decoy sign shows "It's just a sign." The code is built from character codes; "LUMEN" isn't in the bundle (checked after build).
+- **Final hints (as built):** (2) Tab into the page; when focus seems to vanish, check `document.activeElement` or Elements. (3) Press Enter on the unnamed button, then find the `aria-live` element.
 
 ### Room 7: The Release Board (final boss)
 - **Room id:** `release-board`

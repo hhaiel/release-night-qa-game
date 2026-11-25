@@ -4,9 +4,10 @@ import { consoleCorridor } from '../rooms/ConsoleCorridor';
 import { apiVault } from '../rooms/ApiVault';
 import { storageCloset } from '../rooms/StorageCloset';
 import { checkoutGate } from '../rooms/CheckoutGate';
+import { darkRoom } from '../rooms/DarkRoom';
 
 /** Rooms that are built, in play order. */
-export const ROOMS: RoomDefinition[] = [loginLobby, consoleCorridor, apiVault, storageCloset, checkoutGate];
+export const ROOMS: RoomDefinition[] = [loginLobby, consoleCorridor, apiVault, storageCloset, checkoutGate, darkRoom];
 
 /** The full plan, including rooms that aren't built yet. */
 export const ROOM_PLAN: PlannedRoom[] = [

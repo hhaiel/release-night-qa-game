@@ -51,6 +51,12 @@ const ANSWERS: Record<string, RoomAnswer> = {
     normalize: codeNormalize,
     hash: '75905eada3db0f691f66e8a73389adf21e60ee1c3da24014c13d888139466ee3',
   },
+
+  // Room 6: the exit code put into the hidden aria-live region when the unnamed button is pressed.
+  'dark-room': {
+    normalize: codeNormalize,
+    hash: 'fed73058822ff2ac632a86264b760f7a9a6a4d9755f921d0a5c7c317bd281c6d',
+  },
 };
 
 export function isKnownRoom(room: string): boolean {
