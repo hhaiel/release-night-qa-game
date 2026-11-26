@@ -1,6 +1,8 @@
 /* The app under test: the fake ShopRight pages inside each room.
    Deliberately plain and "corporate" so they read as the product being tested, not the game.
-   Room 6's low contrast and missing focus outline are its deliberate bug: don't fix them. */
+   Room 6's low contrast and missing focus outline are its deliberate bug: don't fix them.
+   Layout rules use container queries (@container app), so the store responds to its own width
+   inside the browser frame, not to the size of the whole window. */
 
 /* =========================================================
    The fake ShopRight app inside each room.
@@ -180,9 +182,13 @@
   padding: 1rem 1.5rem 2rem;
 }
 
-@media (max-width: 640px) {
+@container app (max-width: 700px) {
   .shop__product {
     grid-template-columns: 1fr;
+  }
+  /* Stacked: keep the photo a sensible size instead of the full width. */
+  .shop__gallery {
+    max-width: 440px;
   }
 }
 
@@ -475,13 +481,13 @@
   font-weight: 700;
 }
 
-@media (max-width: 640px) {
+@container app (max-width: 560px) {
   .account__layout {
     grid-template-columns: 1fr;
   }
   .account__side {
     flex-direction: row;
-    overflow-x: auto;
+    flex-wrap: wrap;
     border-right: none;
     border-bottom: 1px solid var(--sr-line);
     padding: 0.6rem;
@@ -710,7 +716,7 @@
   color: var(--sr-muted);
 }
 
-@media (max-width: 640px) {
+@container app (max-width: 560px) {
   .admin__pipeline {
     flex-direction: column;
   }
@@ -755,7 +761,7 @@
   padding: 1.5rem;
 }
 
-@media (max-width: 680px) {
+@container app (max-width: 620px) {
   .checkout__layout {
     grid-template-columns: 1fr;
   }
@@ -1168,7 +1174,7 @@
   padding: 1.2rem;
 }
 
-@media (max-width: 680px) {
+@container app (max-width: 600px) {
   .board__columns {
     grid-template-columns: 1fr;
   }
@@ -1534,6 +1540,7 @@
 .sr-nav {
   display: flex;
   gap: 1.2rem;
+  white-space: nowrap;
   margin-right: auto;
   margin-left: 0.8rem;
   font-size: 0.88rem;
@@ -1574,12 +1581,23 @@
 
 .shop__gallery {
   display: grid;
+  /* Without minmax(0, 1fr) the square image sizes the column from its content and spills out. */
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
   gap: 0.6rem;
+  min-width: 0;
+}
+
+/* The drawings scale to their boxes instead of setting a minimum width. */
+.shop__image svg,
+.shop__thumbs svg {
+  display: block;
+  height: auto;
 }
 
 .shop__thumbs {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.6rem;
 }
 
@@ -1694,13 +1712,13 @@
   vertical-align: 2px;
 }
 
-@media (max-width: 760px) {
+@container app (max-width: 760px) {
   .sr-search {
     display: none;
   }
 }
 
-@media (max-width: 640px) {
+@container app (max-width: 600px) {
   .sr-nav {
     display: none;
   }

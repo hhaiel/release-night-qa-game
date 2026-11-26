@@ -143,6 +143,40 @@ export class GamePage {
     await this.page.getByRole('button', { name: 'Next door' }).click();
   }
 
+  // ---------- Layout ----------
+
+  /** How far the store page sticks out past the browser frame, in pixels (0 = fits). */
+  async appOverflow(): Promise<number> {
+    return this.app.evaluate((el) => {
+      const frame = el.getBoundingClientRect();
+      let worst = el.scrollWidth - el.clientWidth;
+      for (const child of el.querySelectorAll('*')) {
+        const r = child.getBoundingClientRect();
+        if (r.width === 0 || child.closest('.visually-hidden')) continue;
+        worst = Math.max(worst, r.right - frame.right, frame.left - r.left);
+      }
+      return Math.max(0, Math.round(worst));
+    });
+  }
+
+  /**
+   * Room 2: the photo and thumbnails must not overlap the product details.
+   * Checks the images themselves, not the gallery box: in DEF-011 the gallery box was the right
+   * width while the photo inside it spilled over the details.
+   */
+  async productColumnsOverlap(): Promise<boolean> {
+    return this.app.evaluate((el) => {
+      const details = el.querySelector('.shop__details')!.getBoundingClientRect();
+      const pictures = [...el.querySelectorAll('.shop__image, .shop__thumbs > *')];
+      return pictures.some((pic) => {
+        const r = pic.getBoundingClientRect();
+        const ox = Math.min(r.right, details.right) - Math.max(r.left, details.left);
+        const oy = Math.min(r.bottom, details.bottom) - Math.max(r.top, details.top);
+        return ox > 1 && oy > 1;
+      });
+    });
+  }
+
   // ---------- Room 1: Login Lobby ----------
 
   /** Reads every HTML comment inside the login form, the way you'd spot one in DevTools > Elements. */

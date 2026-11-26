@@ -789,6 +789,11 @@ a {
   color: var(--faint);
 }
 
+/* The store inside reacts to this box's width (container queries in app-under-test.css). */
+.browser__viewport {
+  container: app / inline-size;
+}
+
 .browser__badge {
   padding: 0.1rem 0.45rem;
   border: 1px solid var(--red);
