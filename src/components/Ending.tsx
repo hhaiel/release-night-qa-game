@@ -60,7 +60,9 @@ export function Ending({ rooms, progress, onPlayAgain }: Props) {
           <span className="ending__rank">{rank.title}</span>
         </h1>
         <p className="ending__blurb">{rank.blurb}</p>
-        <p className="ending__score" aria-label={`Total score ${total}`}>
+        {/* aria-label on a plain <p> is ignored by screen readers, so the real score is hidden text. */}
+        <p className="ending__score">
+          <span className="visually-hidden">Total score: {total.toLocaleString()} points</span>
           <span aria-hidden="true">{shown.toLocaleString()}</span>
           <small aria-hidden="true">pts</small>
         </p>

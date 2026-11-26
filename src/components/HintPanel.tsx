@@ -45,15 +45,10 @@ export function HintPanel({ hints, used, onTakeHint }: Props) {
       </ol>
 
       {used < hints.length ? (
-        <button
-          className="btn btn--hint"
-          onClick={onTakeHint}
-          aria-label={`Decrypt hint ${used + 1} of ${hints.length} (costs ${HINT_COST} points)`}
-        >
-          <span aria-hidden="true">Decrypt hint {used + 1}</span>
-          <span className="btn__cost" aria-hidden="true">
-            &minus;{HINT_COST}
-          </span>
+        // The visible text IS the accessible name (WCAG 2.5.3 "label in name"): no aria-label here.
+        <button className="btn btn--hint" onClick={onTakeHint}>
+          <span>Decrypt hint {used + 1}</span>
+          <span className="btn__cost">&minus;{HINT_COST} pts</span>
         </button>
       ) : (
         <p className="hints__none">All notes decrypted. You&rsquo;ve got this.</p>
