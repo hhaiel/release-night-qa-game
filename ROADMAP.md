@@ -61,13 +61,13 @@ Build one room at a time. For each: component in `src/rooms/`, add it to `ROOMS`
 **Done when:** a friend can play through without help and gets a rank at the end.
 
 ## Phase 4: QA layer (4–5 days)
-- [ ] `docs/test-plan.md`: scope, approach, entry/exit criteria, risks
-- [ ] `test-cases/`: manual test cases per room (same format as the OrangeHRM project)
-- [ ] Playwright UI suite that solves every room. It doubles as the walkthrough
-- [ ] API tests for `/api/check`: correct, wrong, malformed JSON, unknown room, wrong method, too-long answer
-- [ ] axe accessibility checks on every room **except** the Dark Room (that one is meant to fail; assert that it does)
-- [ ] GitHub Actions CI: typecheck, build, Playwright on every push
-- [ ] `defects/defect-log.md`: real bugs you find in your own game, in the same format as OrangeHRM
+- [x] `docs/test-plan.md`: scope, approach, entry/exit criteria, risks, results
+- [x] `test-cases/`: 56 manual test cases in 4 files (same format as the OrangeHRM project), IDs matching the automated tests
+- [x] Playwright UI suite that solves every room, plus a full no-hint walkthrough (7,500 points, Release Blocker)
+- [x] API tests for `/api/check` and every room endpoint, including table-driven boundaries
+- [x] axe accessibility checks on every screen; the Dark Room is asserted to fail with exactly `button-name` and `color-contrast`
+- [x] GitHub Actions CI: typecheck, build, answer-leak check, Playwright on every push (`.github/workflows/ci.yml`)
+- [x] `defects/defect-log.md`: 9 real bugs in the game (7 fixed and retested, 2 open)
 
 **Done when:** CI is green and the defect log has real entries.
 
@@ -81,11 +81,5 @@ Build one room at a time. For each: component in `src/rooms/`, add it to `ROOMS`
 
 ---
 
-## Known issues to log (found while building Room 1)
-These are real bugs in the game. Good first entries for the defect log in Phase 4.
-- Progress is stored in `localStorage` with no checks, so a player can edit `currentRoom` to skip rooms.
-- The clock keeps running while the tab is closed.
-- *(Fixed while building Room 3)* The local dev API crashed with Vite's "aborted" error overlay when the browser cancelled a GET request (React's dev mode does this on purpose). Cause: `vite.config.ts` waited for a request body on GET. Good example of a defect found, fixed and retested.
-- *(Fixed while building Room 4)* Door codes typed with spaces instead of dashes (`ovr 88 kilo`) were rejected, though the design says spaces don't matter. Cause: the normalizer removed spaces but kept dashes. Now both are ignored; all 4 rooms retested with 12 answer variations.
-- *(Fixed while building Room 6)* The game's own "Decrypt hint" button would have been announced as "Decrypt hint 1 −100". It now has a clear label: "Decrypt hint 1 of 3 (costs 100 points)".
-- *(Fixed while building Room 4)* After Restart, the `sr_role=admin` cookie stayed, so Room 4 was already open on a replay. Now cleared on start and restart.
+## Known issues
+Moved to the [defect log](defects/defect-log.md) (DEF-001 to DEF-009).

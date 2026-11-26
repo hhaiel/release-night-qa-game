@@ -21,9 +21,12 @@ QA portfolio project: **Release Night**, an escape-room game where every door is
 - Each file in `api/` exports one function per HTTP method taking a web `Request` and returning a `Response` (Vercel Functions format). `vite.config.ts` runs these during `npm run dev`. Files in `api/_lib/` are helpers, not endpoints.
 - Relative imports in `api/` use the `.js` extension (`./_lib/answers.js`), which Vercel's ESM build needs.
 
-## Tests (Phase 4)
+## Tests
 - Playwright + TypeScript. Prefer `getByRole` / `getByLabel` / `getByText`. No `waitForTimeout`. Web-first assertions.
-- Test titles start with the manual test case ID.
+- Test titles start with the manual test case ID. IDs: `TC-GAME-nnn` (shell), `TC-R<room>-nnn` (rooms), `TC-API-nnn`, `TC-A11Y-nnn`. Manual cases live in `test-cases/TC-<AREA>.md`.
+- All locators live in `tests/support/game-page.ts` (Page Object); specs use the `game` fixture from `tests/support/fixtures.ts`.
+- Tests run with reduced motion (`playwright.config.ts`), which shortens the door animation to 0.7 s.
+- Deliberate room bugs are pinned by tests. If a test about a room's bug fails, the bug was "fixed" by accident: restore it.
 - axe runs on every room except the Dark Room, which must fail axe on purpose.
 
 ## Formats (same as OrangeHRM; use the skills)

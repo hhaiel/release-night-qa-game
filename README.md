@@ -4,9 +4,11 @@
 
 A browser game where each room teaches one real QA skill (DevTools, the console, API testing, authorization, boundary values, accessibility, defect reporting). After each room, a debrief explains the bug the way it would show up on a real project and how you'd report it.
 
-**Status:** all 7 rooms are playable, with scoring and ranks. Next: tests, CI and deploy. See [ROADMAP.md](ROADMAP.md).
+[![CI](https://github.com/hhaiel/release-night-qa-game/actions/workflows/ci.yml/badge.svg)](https://github.com/hhaiel/release-night-qa-game/actions/workflows/ci.yml)
 
-<!-- Live link, CI badge and screenshots go here in Phase 5. The rest of this README becomes the case study. -->
+**Status:** all 7 rooms playable, 76 automated tests passing in CI. Next: deploy and the case-study write-up. See [ROADMAP.md](ROADMAP.md).
+
+<!-- Live link and screenshots go here in Phase 5. The rest of this README becomes the case study. -->
 
 ## Run it locally
 ```bash
@@ -19,16 +21,37 @@ Open the URL Vite prints (usually http://localhost:5173). Open your browser's De
 - Vite + React + TypeScript
 - Serverless answer checking in `api/` (Vercel Functions; run locally by `vite.config.ts`)
 - Progress saved in `localStorage`
-- Planned: Playwright (UI + API), axe accessibility checks, GitHub Actions CI
+- Playwright (UI, API), axe-core accessibility checks, GitHub Actions CI
+
+## Testing
+| | |
+|---|---|
+| Test plan | [docs/test-plan.md](docs/test-plan.md) |
+| Manual test cases | [test-cases/](test-cases/) (56 cases) |
+| Automated tests | 76 Playwright tests: UI, API, accessibility ([tests/](tests/)) |
+| Defect log | [defects/defect-log.md](defects/defect-log.md) (9 real bugs in the game, 7 fixed) |
+
+```bash
+npx playwright install chromium   # first time only
+npm test                          # everything (starts its own server)
+npm run test:ui                   # or :api, :a11y
+npm run test:report               # open the HTML report
+```
 
 ## Project layout
 ```
-api/                 serverless endpoints (POST /api/check)
-  _lib/answers.ts    hashed answers and per-room normalizing
-docs/game-design.md  story, rooms, answers, API contract (spoilers)
+.github/workflows/   CI: typecheck, build, Playwright
+api/                 serverless endpoints (answer check + the room APIs)
+  _lib/              hashed answers, report scoring rules, cookie helper
+defects/             defect log
+docs/                game design (spoilers) and test plan
 scripts/             helper scripts (hash-answer)
 src/
   components/        game shell: intro, HUD, hints, door, debrief
   game/              room registry, progress store, types
   rooms/             one file per room: component + hints + debrief
+test-cases/          manual test cases (IDs match the automated tests)
+tests/
+  support/           Page Object and fixtures
+  ui/ api/ a11y/     Playwright specs
 ```
