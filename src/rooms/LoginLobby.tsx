@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { checkAnswer } from '../lib/api';
+import { ShopHeader } from './shop/ShopHeader';
 import type { RoomDefinition, RoomProps } from '../game/types';
 
 /*
@@ -32,10 +33,7 @@ function LoginLobby({ onSolved }: RoomProps) {
 
   return (
     <div className="fake-app">
-      <div className="fake-app__bar">
-        <span className="fake-app__logo">ShopRight</span>
-        <span className="fake-app__env">staging · v2.3.0-rc4</span>
-      </div>
+      <ShopHeader right={<span className="fake-app__env">staging · v2.3.0-rc4</span>} />
 
       <div className="fake-app__body">
         <form className="login-card" onSubmit={handleSubmit} aria-labelledby="login-heading">

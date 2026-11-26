@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { ShopHeader } from './shop/ShopHeader';
 import type { RoomDefinition } from '../game/types';
 
 /*
@@ -46,15 +47,17 @@ function ApiVault() {
 
   return (
     <div className="fake-app account">
-      <div className="fake-app__bar">
-        <span className="fake-app__logo">ShopRight</span>
-        <span className="account__user">
-          <span className="account__avatar" aria-hidden="true">
-            JR
+      <ShopHeader
+        variant="store"
+        right={
+          <span className="account__user">
+            <span className="account__avatar" aria-hidden="true">
+              JR
+            </span>
+            My account
           </span>
-          My account
-        </span>
-      </div>
+        }
+      />
 
       <div className="account__layout">
         <nav className="account__side" aria-label="Account">
@@ -96,9 +99,9 @@ function ApiVault() {
           {state.kind === 'loaded' && state.orders.length === 0 && (
             <div className="empty">
               <svg viewBox="0 0 120 100" width="120" height="100" aria-hidden="true">
-                <path d="M20 38 60 22l40 16v40L60 94 20 78z" fill="#e8edf3" stroke="#c4cdd8" strokeWidth="2" />
-                <path d="M20 38l40 16 40-16M60 54v40" fill="none" stroke="#c4cdd8" strokeWidth="2" />
-                <path d="M40 30l40 16" stroke="#d6dde6" strokeWidth="6" />
+                <path d="M20 38 60 22l40 16v40L60 94 20 78z" fill="#ece6da" stroke="#c9c1b2" strokeWidth="2" />
+                <path d="M20 38l40 16 40-16M60 54v40" fill="none" stroke="#c9c1b2" strokeWidth="2" />
+                <path d="M40 30l40 16" stroke="#ddd5c6" strokeWidth="6" />
               </svg>
               <h3>No orders yet</h3>
               <p>Hi {state.name}, looks like you haven&rsquo;t placed an order. Your next favorite hoodie is waiting.</p>

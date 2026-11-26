@@ -9,6 +9,7 @@ import '@fontsource/ibm-plex-sans/700.css';
 import '@fontsource/ibm-plex-mono/400.css';
 import '@fontsource/ibm-plex-mono/500.css';
 import '@fontsource/ibm-plex-mono/600.css';
+import '@fontsource-variable/dm-sans';
 import App from './App';
 import './styles/game.css';
 import './styles/app-under-test.css';

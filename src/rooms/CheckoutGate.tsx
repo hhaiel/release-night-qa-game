@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import { ShopHeader } from './shop/ShopHeader';
 import type { RoomDefinition } from '../game/types';
 
 /*
@@ -59,16 +60,17 @@ function CheckoutGate() {
 
   return (
     <div className="fake-app checkout">
-      <div className="fake-app__bar">
-        <span className="fake-app__logo">ShopRight</span>
-        <ol className="checkout__steps" aria-label="Checkout steps">
-          <li className="is-done">Cart</li>
-          <li className="is-done">Shipping</li>
-          <li className="is-current" aria-current="step">
-            Payment
-          </li>
-        </ol>
-      </div>
+      <ShopHeader
+        right={
+          <ol className="checkout__steps" aria-label="Checkout steps">
+            <li className="is-done">Cart</li>
+            <li className="is-done">Shipping</li>
+            <li className="is-current" aria-current="step">
+              Payment
+            </li>
+          </ol>
+        }
+      />
 
       {status.kind === 'done' ? (
         <Confirmation result={status.result} onBack={() => setStatus({ kind: 'idle' })} />

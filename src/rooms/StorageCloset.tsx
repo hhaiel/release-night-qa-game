@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { ShopLogo } from './shop/ShopHeader';
 import type { RoomDefinition } from '../game/types';
 
 /*
@@ -58,9 +59,7 @@ function StorageCloset() {
   return (
     <div className="fake-app admin">
       <div className="fake-app__bar admin__bar">
-        <span className="fake-app__logo">
-          ShopRight <span className="admin__suffix">Admin</span>
-        </span>
+        <ShopLogo suffix="Admin" />
         <span className="account__user">
           <span className="account__avatar" aria-hidden="true">
             JR

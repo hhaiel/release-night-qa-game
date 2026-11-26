@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { RoomDefinition } from '../game/types';
+import { ShopHeader } from './shop/ShopHeader';
+import { Hoodie } from './shop/Hoodie';
 
 /*
  * The bug in this room: "Add to cart" shows a success toast, but the cart update that runs
@@ -53,52 +55,66 @@ function ConsoleCorridor() {
 
   return (
     <div className="fake-app shop">
-      <div className="fake-app__bar">
-        <span className="fake-app__logo">ShopRight</span>
-        <nav className="shop__nav" aria-label="Store">
-          <span>New in</span>
-          <span>Hoodies</span>
-          <span>Sale</span>
-        </nav>
-        <span className="shop__cart" aria-label={`Cart, ${count} items`}>
-          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-            <path
-              d="M3 4h2l2.4 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6.2"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <circle cx="10" cy="20" r="1.4" fill="currentColor" />
-            <circle cx="17" cy="20" r="1.4" fill="currentColor" />
-          </svg>
-          <span className="shop__cart-count">{count}</span>
-        </span>
-      </div>
+      <ShopHeader
+        variant="store"
+        right={
+          <span className="shop__cart" aria-label={`Cart, ${count} items`}>
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+              <path
+                d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinejoin="round"
+              />
+              <path d="M9 8V6.5a3 3 0 0 1 6 0V8" fill="none" stroke="currentColor" strokeWidth="1.8" />
+            </svg>
+            <span className="shop__cart-count">{count}</span>
+          </span>
+        }
+      />
 
       <div className="shop__crumbs">Home / Hoodies / {PRODUCT.name}</div>
 
       <div className="shop__product">
-        <div className="shop__image" aria-hidden="true">
-          <svg viewBox="0 0 200 200">
-            <path
-              d="M70 38c8 10 20 15 30 15s22-5 30-15l34 16 18 46-24 10-10-22v84H52V88l-10 22-24-10 18-46z"
-              fill="#24304a"
-            />
-            <path d="M80 40c4 16 12 26 20 26s16-10 20-26" fill="none" stroke="#3b4a6b" strokeWidth="5" />
-            <path d="M84 120h32v22H84z" fill="#1b2438" />
-            <circle cx="100" cy="94" r="10" fill="#ffb547" opacity="0.9" />
-          </svg>
-          <span className="shop__tag">New</span>
+        <div className="shop__gallery" aria-hidden="true">
+          <div className="shop__image">
+            <Hoodie view="front" />
+            <span className="shop__tag">New</span>
+          </div>
+          <div className="shop__thumbs">
+            <span className="is-selected">
+              <Hoodie view="front" />
+            </span>
+            <span>
+              <Hoodie view="back" />
+            </span>
+            <span>
+              <Hoodie view="detail" />
+            </span>
+          </div>
         </div>
 
         <div className="shop__details">
+          <p className="shop__line">ShopRight Basics</p>
           <h2>{PRODUCT.name}</h2>
+          <p className="shop__rating">
+            <span className="shop__stars" aria-hidden="true">
+              ★★★★<span>★</span>
+            </span>
+            4.6 · 212 reviews
+          </p>
           <p className="shop__price">${PRODUCT.price.toFixed(2)}</p>
           <p className="shop__desc">
             Heavyweight fleece for late shifts. Glow-in-the-dark logo, so you can find your desk after the lights go
             out.
+          </p>
+
+          <p className="shop__color">
+            <span className="shop__swatch shop__swatch--navy is-selected" aria-hidden="true" />
+            <span className="shop__swatch shop__swatch--oat" aria-hidden="true" />
+            <span className="shop__swatch shop__swatch--forest" aria-hidden="true" />
+            Colour: <strong>Midnight navy</strong>
           </p>
 
           <fieldset className="shop__sizes">
@@ -114,7 +130,12 @@ function ConsoleCorridor() {
           <button className="shop__add" onClick={addToCart}>
             Add to cart
           </button>
-          <p className="shop__ship">Free shipping on orders over $50</p>
+
+          <ul className="shop__perks">
+            <li>Free delivery on orders over $50</li>
+            <li>Free 30-day returns</li>
+            <li>In stock · ships tomorrow</li>
+          </ul>
         </div>
       </div>
 

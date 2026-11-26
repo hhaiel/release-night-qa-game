@@ -52,11 +52,16 @@
 body {
   margin: 0;
   min-height: 100vh;
-  /* One desk lamp, top left, and a little grain. */
+  /*
+   * The desk at night: one lamp hangs over the middle of the screen, where you work, and the
+   * edges fall off into darkness. On wide screens the empty sides read as a dark office,
+   * not as unused space. A little grain keeps the flat areas from looking digital.
+   */
   background:
     var(--noise),
-    radial-gradient(1100px 700px at 8% -10%, rgba(240, 168, 48, 0.09), transparent 65%),
-    var(--desk);
+    radial-gradient(ellipse 60% 55% at 50% 30%, rgba(240, 168, 48, 0.085), transparent 70%),
+    radial-gradient(ellipse 85% 85% at 50% 35%, transparent 45%, rgba(0, 0, 0, 0.55) 100%),
+    linear-gradient(180deg, #171513 0%, var(--desk) 60%, #0d0c0b 100%);
   background-attachment: fixed;
 }
 
