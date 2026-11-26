@@ -64,5 +64,5 @@ Source of truth: [game-design.md](game-design.md) (rooms, answers, API contract,
 
 ## 8. Results (2026-11-26)
 - **76 / 76 automated tests pass** (about 1.2 minutes locally), stable over 4 consecutive runs.
-- **9 defects** logged in the game itself: 7 fixed and retested, 2 open (1 needs confirmation). The first automated run found 4 of them: 3 accessibility bugs and 1 in the ending screen.
+- **10 defects** logged: 8 fixed and retested, 2 open (1 needs confirmation). The first automated run found 4 of them (3 accessibility, 1 in the ending screen); one more was in the test code itself (DEF-010).
 - All 7 deliberate bugs confirmed present and solvable.

@@ -73,13 +73,14 @@ Build one room at a time. For each: component in `src/rooms/`, add it to `ROOMS`
 
 ## Phase 5: Deploy + case-study README (1–2 days)
 - [ ] Deploy to Vercel (import the GitHub repo; no config needed)
-- [ ] Run the Playwright suite against the deployed URL once
-- [ ] README written as a case study: the problem, the design, the bugs, how it's tested, what you learned
-- [ ] CI badge, live link and screenshots in the README
+- [ ] Run the Playwright suite against the deployed URL once (`BASE_URL=<url> npm test`)
+- [x] README written as a case study: the problem, the design, the bugs, how it's tested, what you learned
+- [x] CI badge and screenshots in the README (`npm run screenshots` regenerates them)
+- [ ] Live link in the README
 
 **Done when:** the live URL is on your CV.
 
 ---
 
 ## Known issues
-Moved to the [defect log](defects/defect-log.md) (DEF-001 to DEF-009).
+Moved to the [defect log](defects/defect-log.md) (DEF-001 to DEF-010).

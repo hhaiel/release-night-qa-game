@@ -6,8 +6,10 @@ import { defineConfig, devices } from '@playwright/test';
  * Run everything:      npm test
  * Only UI / API / a11y: npm run test:ui | test:api | test:a11y
  * Watch it play:       npx playwright test --headed --project=chromium
+ * Test the live site:  BASE_URL=https://your-deploy.vercel.app npm test   (no local server started)
  */
 const PORT = 4174;
+const LIVE_URL = process.env.BASE_URL;
 
 export default defineConfig({
   testDir: './tests',
@@ -17,7 +19,7 @@ export default defineConfig({
   workers: process.env.CI ? 2 : undefined,
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
-    baseURL: `http://localhost:${PORT}`,
+    baseURL: LIVE_URL ?? `http://localhost:${PORT}`,
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     // Turn on the browser's "reduce motion" setting, which the game supports: endless animations
@@ -26,10 +28,12 @@ export default defineConfig({
     contextOptions: { reducedMotion: 'reduce' },
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
-  webServer: {
-    command: `npm run dev -- --port ${PORT} --strictPort`,
-    url: `http://localhost:${PORT}`,
-    reuseExistingServer: !process.env.CI,
-    timeout: 60_000,
-  },
+  webServer: LIVE_URL
+    ? undefined
+    : {
+        command: `npm run dev -- --port ${PORT} --strictPort`,
+        url: `http://localhost:${PORT}`,
+        reuseExistingServer: !process.env.CI,
+        timeout: 60_000,
+      },
 });

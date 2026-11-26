@@ -19,6 +19,12 @@ export const ROOM_IDS = [
 
 export const STORAGE_KEY = 'release-night:progress:v1';
 
+/**
+ * Saved progress is written while on a static file from the same site, not the game itself.
+ * If the game were open, it could save its own state over ours a moment later (a race).
+ */
+const SEED_PAGE = '/favicon.svg';
+
 /** The answers, as a player would find them. The tests double as a walkthrough. */
 export const ANSWERS = {
   login: { username: 'qa_temp', password: 'Midnight#23' },
@@ -40,10 +46,10 @@ export class GamePage {
 
   /** Fresh game: clears saved progress and room cookies, then shows the intro. */
   async openFresh() {
-    await this.page.goto('/');
+    await this.page.goto(SEED_PAGE);
     await this.page.evaluate((key) => localStorage.removeItem(key), STORAGE_KEY);
     await this.page.context().clearCookies();
-    await this.page.reload();
+    await this.page.goto('/');
   }
 
   /**
@@ -51,7 +57,7 @@ export class GamePage {
    * Lets each room's tests run on their own instead of replaying the whole game.
    */
   async openAtRoom(roomNumber: number) {
-    await this.page.goto('/');
+    await this.page.goto(SEED_PAGE);
     await this.page.context().clearCookies();
     await this.page.evaluate(
       ({ key, ids, index }) => {
@@ -64,7 +70,7 @@ export class GamePage {
       },
       { key: STORAGE_KEY, ids: [...ROOM_IDS], index: roomNumber - 1 },
     );
-    await this.page.reload();
+    await this.page.goto('/');
   }
 
   async startShift() {
