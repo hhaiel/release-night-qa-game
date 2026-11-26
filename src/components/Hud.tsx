@@ -38,7 +38,7 @@ export function Hud({ startedAt, endedAt, doors, hintsUsed, onReset }: Props) {
   return (
     <header className="hud">
       <div className="hud__brand">
-        <span className="live-dot" aria-hidden="true" />
+        <span className="led led--red led--blink" aria-hidden="true" />
         <span className="hud__title">Release Night</span>
       </div>
 
@@ -46,12 +46,13 @@ export function Hud({ startedAt, endedAt, doors, hintsUsed, onReset }: Props) {
         {doors.map((door) => (
           <li
             key={door.number}
-            className={`door-pip door-pip--${door.state}`}
+            className={`plate plate--${door.state}`}
             aria-label={`Room ${door.number}, ${door.title}: ${door.state}`}
             aria-current={door.state === 'current' ? 'step' : undefined}
             title={`${door.number}. ${door.title}`}
           >
-            {door.state === 'cleared' ? '✓' : door.number}
+            <span className="plate__led" aria-hidden="true" />
+            <span aria-hidden="true">{String(door.number).padStart(2, '0')}</span>
           </li>
         ))}
       </ol>
@@ -61,7 +62,7 @@ export function Hud({ startedAt, endedAt, doors, hintsUsed, onReset }: Props) {
           <span className="hud__stat-label">Hints</span> {hintsUsed}
         </span>
         <span className="hud__stat hud__stat--clock" aria-label="Game clock">
-          <span className="hud__stat-label">Clock</span> {gameClock(elapsed)}
+          {gameClock(elapsed)}
         </span>
         {endedAt ? (
           <span className="hud__countdown hud__countdown--blocked" aria-label="Release blocked">

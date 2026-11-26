@@ -12,6 +12,7 @@ import { DoorKeypad } from './components/DoorKeypad';
 import { Ending } from './components/Ending';
 import { FINAL_ROOM_ID } from './game/score';
 import type { SolveResult } from './game/types';
+import { gameClock } from './lib/time';
 
 export default function App() {
   const { progress, start, reset, enterRoom, takeHint, solveRoom, nextRoom } = useProgress();
@@ -52,6 +53,9 @@ export default function App() {
   });
   const hintsUsed = Object.values(progress.rooms).reduce((sum, r) => sum + r.hintsUsed, 0);
 
+  /** The game clock at a moment in real time, e.g. when a room was solved. */
+  const clockAt = (ms?: number) => (ms && progress.startedAt ? gameClock(ms - progress.startedAt) : undefined);
+
   let content;
   const isFinal = room?.id === FINAL_ROOM_ID;
   if (!room || !roomProgress) {
@@ -62,6 +66,7 @@ export default function App() {
       <DoorUnlock
         roomNumber={room.number}
         label={isFinal ? 'Release blocked' : undefined}
+        time={clockAt(roomProgress.solvedAt)}
         onDone={handleUnlocked}
       />
     );
@@ -69,29 +74,47 @@ export default function App() {
     content = isFinal ? (
       <Ending rooms={ROOMS} progress={progress} onPlayAgain={reset} />
     ) : (
-      <Debrief room={room} progress={roomProgress} onContinue={nextRoom} />
+      <Debrief
+        room={room}
+        progress={roomProgress}
+        filedAt={clockAt(roomProgress.solvedAt)}
+        onContinue={nextRoom}
+      />
     );
   } else {
     const RoomComponent = room.Component;
     content = (
       <div className="room">
-        <div className="room__header">
-          <span className="room__number" aria-hidden="true">
-            {String(room.number).padStart(2, '0')}
-          </span>
-          <div className="room__heading">
-            <p className="eyebrow">Room {room.number} of {ROOM_PLAN.length}</p>
-            <h1 className="room__title">{room.title}</h1>
-            <span className="chip chip--skill">{room.skill}</span>
+        <header className="room__header">
+          <div className="room__plate" aria-hidden="true">
+            <span>Room</span>
+            <strong>{String(room.number).padStart(2, '0')}</strong>
           </div>
-        </div>
+          <div className="room__heading">
+            <p className="room__count">
+              Room {room.number} of {ROOM_PLAN.length}
+            </p>
+            <h1 className="room__title">{room.title}</h1>
+            <p className="room__skill">
+              <span>Skill</span> {room.skill}
+            </p>
+          </div>
+        </header>
         <Briefing text={room.briefing} roomNumber={room.number} />
         <div className="room__layout">
           <div className="room__main">
             <BrowserFrame url={room.url}>
               <RoomComponent onSolved={handleSolved} />
             </BrowserFrame>
-            {room.door && <DoorKeypad key={room.id} roomId={room.id} door={room.door} onSolved={handleSolved} />}
+            {room.door && (
+              <DoorKeypad
+                key={room.id}
+                roomId={room.id}
+                roomNumber={room.number}
+                door={room.door}
+                onSolved={handleSolved}
+              />
+            )}
           </div>
           <HintPanel hints={room.hints} used={roomProgress.hintsUsed} onTakeHint={() => takeHint(room.id)} />
         </div>

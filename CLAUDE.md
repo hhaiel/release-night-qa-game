@@ -14,7 +14,8 @@ QA portfolio project: **Release Night**, an escape-room game where every door is
 - Room ids are kebab-case (`login-lobby`). The same id is used in the API and in `localStorage`.
 - Answers are checked on the server. Store only hashes in `api/_lib/answers.ts` (`npm run hash-answer -- <room-id> "<answer>"`). Never put a room's answer in client code unless finding it in the page *is* the puzzle (Room 1).
 - Rooms contain deliberate bugs. Don't "fix" them. Bugs in the game itself go in the defect log.
-- The fake ShopRight app inside a room uses the light `.fake-app` styles; the game frame is dark.
+- The fake ShopRight app inside a room uses the light `.fake-app` styles in `src/styles/app-under-test.css`; the game frame (`src/styles/game.css`) is a dark "desk at night": warm charcoal, lamp amber, signal red, and paper for printed things (checklist, debrief, receipt). Fonts: Archivo (condensed headings), IBM Plex Sans and Plex Mono. Sharp corners, hairline rules, no glows or gradient text.
+- Keep text at 4.5:1 contrast or more; the axe tests fail the build otherwise.
 - Room 7 (`release-board`) is the last room: it calls `onSolved({ reportScore })`, and the app shows the ending screen instead of a debrief. Scoring lives in `src/game/score.ts`.
 
 ## API

@@ -7,10 +7,13 @@ import { HINT_COST } from './HintPanel';
 interface Props {
   room: RoomDefinition;
   progress: RoomProgress;
+  /** Game clock when the room was solved, e.g. "23:51:07". */
+  filedAt?: string;
   onContinue: () => void;
 }
 
-export function Debrief({ room, progress, onContinue }: Props) {
+/** The debrief as a printed defect report: what was wrong, why it matters, and the report as filed. */
+export function Debrief({ room, progress, filedAt, onContinue }: Props) {
   const { debrief } = room;
   const headingRef = useRef<HTMLHeadingElement>(null);
 
@@ -22,109 +25,111 @@ export function Debrief({ room, progress, onContinue }: Props) {
 
   const time =
     progress.enteredAt && progress.solvedAt ? formatDuration(progress.solvedAt - progress.enteredAt) : '—';
+  const number = String(room.number).padStart(2, '0');
   const ticketId = `SHOP-${2300 + room.number}`;
+  const severity = debrief.report.severity;
 
   return (
     <article className="debrief" aria-labelledby="debrief-title">
-      <p className="eyebrow">
-        Room {String(room.number).padStart(2, '0')} cleared · Debrief
-      </p>
+      <p className="debrief__kicker">Room {number} cleared · Debrief</p>
 
-      <div className="ticket">
-        <div className="ticket__stamp" aria-hidden="true">
-          Bug found
+      <div className="sheet">
+        <div className="sheet__stamp" aria-hidden="true">
+          <span>Filed</span>
+          {filedAt && <small>{filedAt}</small>}
         </div>
-        <div className="ticket__head">
-          <span className="ticket__id">{ticketId}</span>
-          <span className="chip chip--bug">Bug</span>
-          <span className={`chip sev sev--${debrief.report.severity.toLowerCase()}`}>{debrief.report.severity}</span>
-          <span className="chip">{debrief.report.category}</span>
-        </div>
-        <h1 id="debrief-title" ref={headingRef} tabIndex={-1}>
+
+        <header className="sheet__head">
+          <span>ShopRight QA · Defect report</span>
+          <span>{ticketId}</span>
+        </header>
+
+        <h1 id="debrief-title" ref={headingRef} tabIndex={-1} className="sheet__title">
           {debrief.bug}
         </h1>
 
-        <dl className="stat-tiles">
-          <div className="stat-tile">
+        <dl className="sheet__fields">
+          <div>
+            <dt>Severity</dt>
+            <dd>
+              <span className={`sev sev--${severity.toLowerCase()}`}>{severity}</span>
+            </dd>
+          </div>
+          <div>
+            <dt>Category</dt>
+            <dd>{debrief.report.category}</dd>
+          </div>
+          <div>
             <dt>Time in room</dt>
             <dd>{time}</dd>
           </div>
-          <div className="stat-tile">
+          <div>
             <dt>Hints used</dt>
             <dd>
               {progress.hintsUsed}
-              {progress.hintsUsed > 0 && <small> (&minus;{progress.hintsUsed * HINT_COST})</small>}
+              {progress.hintsUsed > 0 && <span className="sheet__penalty"> (&minus;{progress.hintsUsed * HINT_COST})</span>}
             </dd>
           </div>
-          <div className="stat-tile stat-tile--wide">
+          <div className="sheet__fields-wide">
             <dt>Skill</dt>
             <dd>{room.skill}</dd>
           </div>
         </dl>
+
+        <div className="sheet__body">
+          <div className="sheet__notes">
+            <section>
+              <h2>
+                <span aria-hidden="true">1</span> What was wrong
+              </h2>
+              <p>{debrief.whatWasWrong}</p>
+            </section>
+            <section>
+              <h2>
+                <span aria-hidden="true">2</span> Why it matters
+              </h2>
+              <p>{debrief.whyItMatters}</p>
+            </section>
+            <section>
+              <h2>
+                <span aria-hidden="true">3</span> How you found it
+              </h2>
+              <p>{debrief.howYouFoundIt}</p>
+            </section>
+          </div>
+
+          <section className="sheet__form" aria-labelledby="as-filed">
+            <h2 id="as-filed">How you&rsquo;d report it</h2>
+            <dl>
+              <dt>Title</dt>
+              <dd className="sheet__form-title">{debrief.report.title}</dd>
+              <dt>Steps</dt>
+              <dd>
+                <ol>
+                  {debrief.report.steps.map((step) => (
+                    <li key={step}>{step}</li>
+                  ))}
+                </ol>
+              </dd>
+              <dt>Expected</dt>
+              <dd>{debrief.report.expected}</dd>
+              <dt>Actual</dt>
+              <dd>{debrief.report.actual}</dd>
+            </dl>
+          </section>
+        </div>
+
+        <aside className="sheet__review">
+          <h2>Reviewer&rsquo;s note</h2>
+          <p>{debrief.testerTip}</p>
+        </aside>
       </div>
 
-      <div className="explain">
-        <section className="explain__card">
-          <span className="explain__icon" aria-hidden="true">
-            ✕
-          </span>
-          <h2>What was wrong</h2>
-          <p>{debrief.whatWasWrong}</p>
-        </section>
-        <section className="explain__card">
-          <span className="explain__icon" aria-hidden="true">
-            !
-          </span>
-          <h2>Why it matters</h2>
-          <p>{debrief.whyItMatters}</p>
-        </section>
-        <section className="explain__card">
-          <span className="explain__icon" aria-hidden="true">
-            ⌕
-          </span>
-          <h2>How you found it</h2>
-          <p>{debrief.howYouFoundIt}</p>
-        </section>
+      <div className="debrief__actions">
+        <button className="btn btn--primary btn--big" onClick={onContinue}>
+          Next door <span aria-hidden="true">→</span>
+        </button>
       </div>
-
-      <section className="report-card" aria-labelledby="report-title">
-        <h2 id="report-title">
-          How you&rsquo;d report it <span className="report-card__id">{ticketId}</span>
-        </h2>
-        <dl className="report">
-          <dt>Title</dt>
-          <dd className="report__title">{debrief.report.title}</dd>
-          <dt>Severity</dt>
-          <dd>
-            <span className={`chip sev sev--${debrief.report.severity.toLowerCase()}`}>
-              {debrief.report.severity}
-            </span>
-          </dd>
-          <dt>Category</dt>
-          <dd>{debrief.report.category}</dd>
-          <dt>Steps</dt>
-          <dd>
-            <ol className="report__steps">
-              {debrief.report.steps.map((step) => (
-                <li key={step}>{step}</li>
-              ))}
-            </ol>
-          </dd>
-          <dt>Expected</dt>
-          <dd className="report__expected">{debrief.report.expected}</dd>
-          <dt>Actual</dt>
-          <dd className="report__actual">{debrief.report.actual}</dd>
-        </dl>
-      </section>
-
-      <aside className="tip">
-        <h2>Tester tip</h2>
-        <p>{debrief.testerTip}</p>
-      </aside>
-
-      <button className="btn btn--primary btn--big" onClick={onContinue}>
-        Next door <span aria-hidden="true">→</span>
-      </button>
     </article>
   );
 }

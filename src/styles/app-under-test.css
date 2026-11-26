@@ -1,0 +1,1477 @@
+/* The app under test: the fake ShopRight pages inside each room.
+   Deliberately plain and "corporate" so they read as the product being tested, not the game.
+   Room 6's low contrast and missing focus outline are its deliberate bug: don't fix them. */
+
+/* =========================================================
+   The fake ShopRight app inside each room.
+   Deliberately plain and "corporate" so it reads as the app
+   under test, not the game.
+   ========================================================= */
+.fake-app {
+  color-scheme: light;
+  background: #f4f5f7;
+  color: #1f2328;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  min-height: 440px;
+}
+
+.fake-app :focus-visible {
+  outline: 3px solid #0b5cad;
+  outline-offset: 2px;
+}
+
+.fake-app__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 1.25rem;
+  background: #ffffff;
+  border-bottom: 1px solid #d0d7de;
+}
+
+.fake-app__logo {
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #0b5cad;
+}
+
+.fake-app__env {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  padding: 0.15rem 0.5rem;
+  background: #fff8c5;
+  color: #6b5100;
+  border-radius: 4px;
+}
+
+.fake-app__body {
+  display: grid;
+  place-items: center;
+  padding: 2.5rem 1rem;
+}
+
+.login-card {
+  width: min(360px, 100%);
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem;
+  background: #ffffff;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.login-card h2 {
+  margin: 0 0 0.25rem;
+  font-family: inherit;
+  font-size: 1.3rem;
+}
+
+.login-card__sub {
+  margin: 0 0 1.25rem;
+  font-size: 0.875rem;
+  color: #57606a;
+}
+
+.login-card label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.login-card input {
+  font: inherit;
+  padding: 0.5rem 0.65rem;
+  margin-bottom: 1rem;
+  border: 1px solid #8c959f;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #1f2328;
+}
+
+.login-card button {
+  font: inherit;
+  font-weight: 600;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 6px;
+  background: #0b5cad;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.login-card button:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.login-card__error {
+  margin: -0.25rem 0 1rem;
+  padding: 0.5rem 0.65rem;
+  font-size: 0.875rem;
+  background: #ffebe9;
+  color: #a40e26;
+  border: 1px solid #ffcecb;
+  border-radius: 6px;
+}
+
+.login-card__foot {
+  margin: 1rem 0 0;
+  font-size: 0.8rem;
+  color: #57606a;
+  text-align: center;
+}
+
+.login-card__foot span {
+  text-decoration: underline;
+}
+
+/* =========================================================
+   Room 2: ShopRight product page
+   ========================================================= */
+.shop {
+  position: relative;
+  overflow: hidden;
+}
+
+.shop__nav {
+  display: flex;
+  gap: 1.3rem;
+  font-size: 0.85rem;
+  color: #57606a;
+}
+
+.shop__cart {
+  position: relative;
+  display: inline-flex;
+  color: #1f2328;
+}
+
+.shop__cart-count {
+  position: absolute;
+  top: -7px;
+  right: -9px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 9px;
+  background: #0b5cad;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
+
+.shop__crumbs {
+  padding: 0.8rem 1.5rem 0;
+  font-size: 0.78rem;
+  color: #57606a;
+}
+
+.shop__product {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 1.8rem;
+  padding: 1rem 1.5rem 2rem;
+}
+
+@media (max-width: 640px) {
+  .shop__product {
+    grid-template-columns: 1fr;
+  }
+  .shop__nav {
+    display: none;
+  }
+}
+
+.shop__image {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  background: radial-gradient(circle at 50% 40%, #ffffff, #e6e9ef);
+  border: 1px solid #d8dde4;
+}
+
+.shop__image svg {
+  width: 78%;
+}
+
+.shop__tag {
+  position: absolute;
+  top: 0.7rem;
+  left: 0.7rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  background: #1f2328;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.shop__details h2 {
+  margin: 0.2rem 0 0.2rem;
+  font-family: inherit;
+  font-size: 1.5rem;
+}
+
+.shop__price {
+  margin: 0 0 0.8rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0b5cad;
+}
+
+.shop__desc {
+  margin: 0 0 1.1rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: #57606a;
+}
+
+.shop__sizes {
+  display: flex;
+  gap: 0.45rem;
+  margin: 0 0 1.2rem;
+  padding: 0;
+  border: none;
+}
+
+.shop__sizes legend {
+  margin-bottom: 0.45rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.shop__sizes label {
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.3rem;
+  border: 1px solid #c4cad2;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: #fff;
+}
+
+.shop__sizes label.is-selected {
+  border-color: #1f2328;
+  box-shadow: inset 0 0 0 1px #1f2328;
+}
+
+.shop__sizes input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.shop__sizes label:has(input:focus-visible) {
+  outline: 3px solid #0b5cad;
+  outline-offset: 2px;
+}
+
+.shop__add {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  background: #0b5cad;
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.shop__add:hover {
+  background: #0a4f95;
+}
+
+.shop__ship {
+  margin: 0.6rem 0 0;
+  font-size: 0.78rem;
+  color: #57606a;
+  text-align: center;
+}
+
+.shop__toast {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  background: #1a7f37;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  animation: toast-in 0.25s ease-out;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+/* =========================================================
+   Room 3: ShopRight account / order history
+   ========================================================= */
+.account__user {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1f2328;
+}
+
+.account__avatar {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #dbe7f5;
+  color: #0b5cad;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.account__layout {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr);
+  min-height: 400px;
+}
+
+.account__side {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 1.2rem 0.8rem;
+  border-right: 1px solid #d8dde4;
+  background: #fafbfc;
+  font-size: 0.88rem;
+  color: #57606a;
+}
+
+.account__side span {
+  padding: 0.45rem 0.7rem;
+  border-radius: 6px;
+}
+
+.account__side .is-active {
+  background: #e7f0fa;
+  color: #0b5cad;
+  font-weight: 700;
+}
+
+.account__main {
+  padding: 1.4rem 1.6rem 2rem;
+}
+
+.account__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+}
+
+.account__head h2 {
+  margin: 0;
+  font-family: inherit;
+  font-size: 1.35rem;
+}
+
+.account__refresh {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #c4cad2;
+  border-radius: 6px;
+  background: #fff;
+  color: #1f2328;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.account__refresh:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.account__skeleton {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.skeleton-row {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.6fr;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #e3e7ec;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.skeleton-row span {
+  height: 0.75rem;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #eceff3 0%, #f6f8fa 50%, #eceff3 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.1s linear infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.account__error {
+  padding: 0.8rem 1rem;
+  border: 1px solid #ffcecb;
+  border-radius: 8px;
+  background: #ffebe9;
+  color: #a40e26;
+  font-size: 0.9rem;
+}
+
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: 0.35rem;
+  padding: 2rem 1rem;
+  border: 1px dashed #d0d7de;
+  border-radius: 10px;
+  background: #fff;
+  text-align: center;
+}
+
+.empty h3 {
+  margin: 0.6rem 0 0;
+  font-family: inherit;
+  font-size: 1.1rem;
+}
+
+.empty p {
+  max-width: 34ch;
+  margin: 0;
+  font-size: 0.88rem;
+  color: #57606a;
+}
+
+.empty__cta {
+  margin-top: 0.8rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 6px;
+  background: #0b5cad;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .account__layout {
+    grid-template-columns: 1fr;
+  }
+  .account__side {
+    flex-direction: row;
+    overflow-x: auto;
+    border-right: none;
+    border-bottom: 1px solid #d8dde4;
+    padding: 0.6rem;
+  }
+  .account__side span {
+    white-space: nowrap;
+  }
+}
+
+/* =========================================================
+   Room 4: ShopRight admin / release controls
+   ========================================================= */
+.admin__bar {
+  background: #1f2937;
+  border-bottom-color: #111827;
+}
+
+.admin__bar .fake-app__logo {
+  color: #ffffff;
+}
+
+.admin__bar .account__user {
+  color: #e5e7eb;
+}
+
+.admin__suffix {
+  margin-left: 0.3rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  background: #374151;
+  color: #d1d5db;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.admin__crumbs {
+  margin: 0 0 0.25rem;
+  font-size: 0.75rem;
+  color: #57606a;
+}
+
+.admin__title {
+  margin: 0 0 1.2rem;
+  font-family: inherit;
+  font-size: 1.35rem;
+}
+
+.admin__btn {
+  margin-top: 0.4rem;
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  background: #1f2937;
+  color: #fff;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin__btn:hover {
+  background: #111827;
+}
+
+.denied {
+  display: grid;
+  justify-items: center;
+  gap: 0.35rem;
+  padding: 2rem 1.2rem;
+  border: 1px solid #f1c6c6;
+  border-radius: 10px;
+  background: #fff;
+  text-align: center;
+}
+
+.denied__icon {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #ffebe9;
+  color: #c2261f;
+}
+
+.denied__code {
+  margin: 0.5rem 0 0;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #c2261f;
+}
+
+.denied h3 {
+  margin: 0;
+  font-family: inherit;
+  font-size: 1.15rem;
+}
+
+.denied p {
+  max-width: 40ch;
+  margin: 0;
+  font-size: 0.88rem;
+  color: #57606a;
+}
+
+.denied strong {
+  color: #1f2328;
+}
+
+.denied code {
+  padding: 0.05rem 0.35rem;
+  border-radius: 4px;
+  background: #f1f3f5;
+  color: #1f2328;
+  font-size: 0.82rem;
+}
+
+.admin__panel {
+  display: grid;
+  gap: 1rem;
+  animation: rise 0.4s ease-out;
+}
+
+.admin__release {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem 1.2rem;
+  border: 1px solid #d8dde4;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.admin__label {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #57606a;
+}
+
+.admin__version,
+.admin__value {
+  margin: 0.1rem 0 0;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.admin__status {
+  margin-left: auto;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: #fff8c5;
+  color: #6b5100;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.admin__pipeline {
+  list-style: none;
+  display: flex;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+}
+
+.admin__stage {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex: 1;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #d8dde4;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.admin__stage-status {
+  margin-left: auto;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #57606a;
+}
+
+.admin__stage-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #9ca3af;
+}
+
+.admin__stage--passed .admin__stage-dot {
+  background: #1a7f37;
+}
+
+.admin__stage--waiting .admin__stage-dot {
+  background: #d4a72c;
+}
+
+.admin__override {
+  padding: 1.1rem 1.2rem;
+  border: 2px dashed #c2261f;
+  border-radius: 10px;
+  background: #fff5f5;
+}
+
+.admin__code {
+  margin: 0.3rem 0;
+  font-family: var(--mono);
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #a40e26;
+}
+
+.admin__note {
+  margin: 0;
+  font-size: 0.82rem;
+  color: #57606a;
+}
+
+@media (max-width: 640px) {
+  .admin__pipeline {
+    flex-direction: column;
+  }
+  .admin__release {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}
+
+/* =========================================================
+   Room 5: ShopRight checkout
+   ========================================================= */
+.checkout__steps {
+  list-style: none;
+  display: flex;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  font-size: 0.78rem;
+  color: #8c959f;
+}
+
+.checkout__steps li + li::before {
+  content: '›';
+  margin-right: 0.4rem;
+  color: #c4cad2;
+}
+
+.checkout__steps .is-done {
+  color: #1a7f37;
+}
+
+.checkout__steps .is-current {
+  color: #1f2328;
+  font-weight: 700;
+}
+
+.checkout__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 1.3rem;
+  padding: 1.5rem;
+}
+
+@media (max-width: 680px) {
+  .checkout__layout {
+    grid-template-columns: 1fr;
+  }
+  .checkout__steps {
+    display: none;
+  }
+}
+
+.checkout__card,
+.checkout__summary {
+  padding: 1.2rem 1.3rem;
+  border: 1px solid #d8dde4;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.checkout__card h2,
+.checkout__summary h2 {
+  margin: 0 0 1rem;
+  font-family: inherit;
+  font-size: 1.1rem;
+}
+
+.checkout__saved {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1.2rem;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid #0b5cad;
+  border-radius: 8px;
+  background: #f3f8fe;
+  font-size: 0.86rem;
+}
+
+.checkout__card-brand {
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+  background: #1a1f71;
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.checkout__card-test {
+  margin-left: auto;
+  padding: 0.05rem 0.4rem;
+  border-radius: 4px;
+  background: #fff8c5;
+  color: #6b5100;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.checkout__label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.checkout__input {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #8c959f;
+  border-radius: 6px;
+  background: #fff;
+  color: #1f2328;
+  font: inherit;
+}
+
+.checkout__input[aria-invalid='true'] {
+  border-color: #cf222e;
+  box-shadow: 0 0 0 3px rgba(207, 34, 46, 0.12);
+}
+
+.checkout__help {
+  margin: 0.35rem 0 1.1rem;
+  font-size: 0.78rem;
+  color: #57606a;
+}
+
+.checkout__help.is-error {
+  color: #cf222e;
+  font-weight: 600;
+}
+
+.checkout__error {
+  margin: -0.4rem 0 1rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid #ffcecb;
+  border-radius: 6px;
+  background: #ffebe9;
+  color: #a40e26;
+  font-size: 0.85rem;
+}
+
+.checkout__pay {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  background: #1a7f37;
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.checkout__pay:hover:not(:disabled) {
+  background: #166c2f;
+}
+
+.checkout__pay:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+
+.checkout__item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.8rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid #eaeef2;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.checkout__item small {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #57606a;
+}
+
+.checkout__thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 50% 45%, #ffb547 0 5px, transparent 6px),
+    linear-gradient(#24304a, #24304a) center / 60% 70% no-repeat,
+    #e6e9ef;
+}
+
+.checkout__totals {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.45rem 1rem;
+  margin: 0.9rem 0 0;
+  font-size: 0.88rem;
+}
+
+.checkout__totals dt {
+  color: #57606a;
+}
+
+.checkout__totals dd {
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.checkout__totals .checkout__grand {
+  margin-top: 0.4rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid #eaeef2;
+  color: #1f2328;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.checkout__done {
+  display: grid;
+  justify-items: center;
+  gap: 0.4rem;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  animation: rise 0.4s ease-out;
+}
+
+.checkout__done-icon {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #dafbe1;
+  color: #1a7f37;
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.checkout__done-icon.is-refund {
+  background: #ffebe9;
+  color: #cf222e;
+}
+
+.checkout__done h2 {
+  margin: 0.5rem 0 0;
+  font-family: inherit;
+  font-size: 1.35rem;
+}
+
+.checkout__order-id {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: #57606a;
+}
+
+.checkout__done p {
+  max-width: 44ch;
+  margin: 0.2rem 0 0;
+  font-size: 0.92rem;
+  color: #57606a;
+}
+
+.checkout__done strong {
+  color: #1f2328;
+}
+
+.checkout__refund {
+  margin-top: 0.8rem !important;
+  padding: 0.7rem 1rem;
+  border: 2px dashed #cf222e;
+  border-radius: 8px;
+  background: #fff5f5;
+}
+
+.checkout__refund span {
+  display: block;
+  margin-top: 0.2rem;
+  font-family: var(--mono);
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #a40e26;
+}
+
+.checkout__back {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #c4cad2;
+  border-radius: 6px;
+  background: #fff;
+  color: #1f2328;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* =========================================================
+   Room 6: the Dark Room (power's out)
+   The low contrast and missing focus outline here are THE BUG.
+   This room must fail axe on purpose. Don't fix it.
+   ========================================================= */
+.dark-room {
+  position: relative;
+  overflow: hidden;
+  min-height: 440px;
+  background: radial-gradient(ellipse at 50% 30%, #101010, #0a0a0a 70%);
+  color: #2e2e2e;
+  color-scheme: dark;
+  cursor: crosshair;
+}
+
+.dark-room__flashlight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle 130px at var(--lx, 50%) var(--ly, 40%),
+    rgba(255, 244, 214, 0.05),
+    transparent 70%
+  );
+}
+
+.dark-room__notice {
+  position: absolute;
+  top: 1rem;
+  left: 1.2rem;
+  margin: 0;
+  padding: 0.2rem 0.4rem;
+  /* Solid background so axe can measure the (deliberately failing) contrast; it can't on a gradient. */
+  background: #0b0b0b;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: #2e2e2e;
+}
+
+.dark-room__sign {
+  position: absolute;
+  top: 2.6rem;
+  right: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.8rem;
+  border: 2px solid #1b5e35;
+  border-radius: 4px;
+  background: #06180e;
+  color: #3ee08f;
+  font-family: var(--display);
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-shadow: 0 0 12px rgba(62, 224, 143, 0.8);
+  box-shadow:
+    0 0 30px rgba(62, 224, 143, 0.25),
+    inset 0 0 12px rgba(62, 224, 143, 0.15);
+  cursor: pointer;
+  animation: flicker 5s infinite;
+}
+
+@keyframes flicker {
+  0%,
+  18%,
+  22%,
+  25%,
+  53%,
+  57%,
+  100% {
+    opacity: 1;
+  }
+  20%,
+  24%,
+  55% {
+    opacity: 0.35;
+  }
+}
+
+.dark-room__sign-note {
+  position: absolute;
+  top: 6rem;
+  right: 2rem;
+  margin: 0;
+  font-size: 0.75rem;
+  color: #3a3a3a;
+}
+
+.dark-room__furniture {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 62%;
+  fill: #0e0e0e;
+}
+
+.dark-room__exit {
+  position: absolute;
+  left: 1.4rem;
+  bottom: 1.4rem;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 1px solid #121212;
+  border-radius: 6px;
+  background: #0d0d0d;
+  color: #151515;
+  cursor: crosshair;
+}
+
+.dark-room__exit:focus,
+.dark-room__exit:focus-visible {
+  outline: none;
+}
+
+/* =========================================================
+   Room 7: the release board (bug tracker)
+   ========================================================= */
+.board {
+  background: #f1f3f6;
+}
+
+.board__bar {
+  background: #0d2a4f;
+  border-bottom-color: #0a2240;
+}
+
+.board__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #fff;
+  font-weight: 800;
+}
+
+.board__logo-mark {
+  color: #5cd6ff;
+}
+
+.board__project {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #c8d6ea;
+}
+
+.board__columns {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
+  padding: 1.2rem;
+}
+
+@media (max-width: 680px) {
+  .board__columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+.board__col {
+  display: grid;
+  align-content: start;
+  gap: 0.55rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: #e6e9ee;
+}
+
+.board__col h2 {
+  margin: 0 0 0.2rem;
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #57606a;
+}
+
+.board__col--ship {
+  background: #fde8e8;
+}
+
+.board__col--ship h2 {
+  color: #a40e26;
+}
+
+.board__card {
+  padding: 0.6rem 0.7rem;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  font-size: 0.84rem;
+}
+
+.board__key {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #0b5cad;
+}
+
+.board__tag {
+  display: inline-block;
+  margin-top: 0.4rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 4px;
+  background: #fff8c5;
+  color: #6b5100;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.board__blocker {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.7rem;
+  border: 2px solid #cf222e;
+  border-radius: 6px;
+  background: #fff;
+  color: #1f2328;
+  font: inherit;
+  font-size: 0.84rem;
+  text-align: left;
+  cursor: pointer;
+  animation: blocker-pulse 1.6s ease-in-out infinite;
+}
+
+.board__blocker:hover {
+  background: #fff5f5;
+}
+
+@keyframes blocker-pulse {
+  50% {
+    box-shadow: 0 0 0 5px rgba(207, 34, 46, 0.15);
+  }
+}
+
+.board__blocker-label {
+  justify-self: start;
+  padding: 0.05rem 0.45rem;
+  border-radius: 4px;
+  background: #cf222e;
+  color: #fff;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.board__blocker-cta {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #cf222e;
+}
+
+.report-form-wrap {
+  padding: 0 1.2rem 1.4rem;
+  animation: rise 0.35s ease-out;
+}
+
+.report-form,
+.report-pass {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1.2rem 1.3rem 1.3rem;
+  border: 1px solid #d0d7de;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.report-form h3,
+.report-pass h3 {
+  margin: 0 0 0.5rem;
+  font-family: inherit;
+  font-size: 1.1rem;
+}
+
+.report-form label {
+  margin-top: 0.45rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.report-form input,
+.report-form select,
+.report-form textarea {
+  width: 100%;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid #8c959f;
+  border-radius: 6px;
+  background: #fff;
+  color: #1f2328;
+  font: inherit;
+  font-size: 0.88rem;
+}
+
+.report-form textarea {
+  resize: vertical;
+}
+
+.report-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+
+.report-form__row label {
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.report-form__error {
+  margin: 0.4rem 0 0;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid #ffcecb;
+  border-radius: 6px;
+  background: #ffebe9;
+  color: #a40e26;
+  font-size: 0.85rem;
+}
+
+.report-form__submit {
+  margin-top: 0.8rem;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 6px;
+  background: #0d2a4f;
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.report-form__submit:hover:not(:disabled) {
+  background: #12386a;
+}
+
+.report-form__submit:disabled {
+  opacity: 0.65;
+  cursor: progress;
+}
+
+.report-fail {
+  margin-bottom: 0.4rem;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid #ffcecb;
+  border-radius: 8px;
+  background: #fff7f6;
+  font-size: 0.86rem;
+}
+
+.report-fail p {
+  margin: 0 0 0.5rem;
+  color: #a40e26;
+}
+
+.score-list {
+  list-style: none;
+  display: grid;
+  gap: 0.35rem;
+  margin: 0.3rem 0 0;
+  padding: 0;
+}
+
+.score-list li {
+  display: grid;
+  grid-template-columns: 1.4rem 1fr auto;
+  gap: 0.5rem;
+  align-items: start;
+  font-size: 0.82rem;
+  color: #1f2328;
+}
+
+.score-list__mark {
+  display: grid;
+  place-items: center;
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.is-full .score-list__mark {
+  background: #dafbe1;
+  color: #1a7f37;
+}
+
+.is-partial .score-list__mark {
+  background: #fff8c5;
+  color: #7d5e00;
+}
+
+.is-zero .score-list__mark {
+  background: #ffebe9;
+  color: #cf222e;
+}
+
+.score-list__text small {
+  display: block;
+  margin-top: 0.1rem;
+  color: #57606a;
+}
+
+.score-list__pts {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #57606a;
+}
+
+.report-pass {
+  justify-items: center;
+  text-align: center;
+  border-color: #aceebb;
+  background: linear-gradient(180deg, #f0fff4, #fff 60%);
+}
+
+.report-pass p {
+  margin: 0 0 0.6rem;
+  font-size: 0.88rem;
+  color: #57606a;
+}
+
+.report-pass .score-list {
+  width: 100%;
+  max-width: 480px;
+  text-align: left;
+}
+
+.report-pass__score {
+  font-family: var(--mono);
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #1a7f37;
+}
+
+.report-pass__score small {
+  font-size: 1rem;
+  color: #57606a;
+}
+
+.report-pass .report-form__submit {
+  min-width: 220px;
+  background: #cf222e;
+}
+
+.report-pass .report-form__submit:hover {
+  background: #a40e26;
+}

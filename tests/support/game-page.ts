@@ -96,12 +96,12 @@ export class GamePage {
   }
 
   hintButton(): Locator {
-    return this.page.getByRole('button', { name: /^Decrypt hint/ });
+    return this.page.getByRole('button', { name: /^Open hint/ });
   }
 
   /** The list of hints that have been decrypted so far. */
   get openHints(): Locator {
-    return this.page.getByRole('complementary', { name: 'Debug notes' }).getByRole('listitem').filter({
+    return this.page.getByRole('complementary', { name: 'Hints' }).getByRole('listitem').filter({
       hasNot: this.page.getByText(/locked$/),
     });
   }
@@ -254,7 +254,7 @@ export class GamePage {
   // ---------- Ending ----------
 
   get rank(): Locator {
-    return this.page.getByRole('heading', { level: 1, name: /Your rank/ });
+    return this.page.getByRole('heading', { level: 1, name: /^Signed off as/ });
   }
 
   /** Screen-reader text with the final score, e.g. "Total score: 7,500 points". */

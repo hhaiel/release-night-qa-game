@@ -33,6 +33,7 @@ function useCountUp(target: number, durationMs = 1400): number {
   return value;
 }
 
+/** The ending: the release decision on the left, an itemised receipt of the score on the right. */
 export function Ending({ rooms, progress, onPlayAgain }: Props) {
   const { perRoom, bonus, beforeMidnight, total, rank } = totalScore(rooms, progress);
   const shown = useCountUp(total);
@@ -45,113 +46,117 @@ export function Ending({ rooms, progress, onPlayAgain }: Props) {
 
   const endedAt = progress.rooms[FINAL_ROOM_ID]?.solvedAt ?? Date.now();
   const realTime = progress.startedAt ? endedAt - progress.startedAt : 0;
+  const finishedAt = gameClock(realTime);
   const hintsUsed = Object.values(progress.rooms).reduce((sum, r) => sum + r.hintsUsed, 0);
   const reportScore = progress.rooms[FINAL_ROOM_ID]?.reportScore ?? 0;
   const bugs = rooms.filter((r) => r.id !== FINAL_ROOM_ID);
 
   return (
     <article className="ending" aria-labelledby="ending-title">
-      <div className="ending__hero">
-        <p className="eyebrow">
+      <div className="ending__decision">
+        <p className="ending__kicker">
+          <span className={`led ${beforeMidnight ? 'led--green' : 'led--amber'}`} aria-hidden="true" />
           {beforeMidnight ? 'Release blocked before midnight' : 'Release blocked (after midnight)'}
         </p>
-        <h1 id="ending-title" ref={headingRef} tabIndex={-1}>
-          <span className="ending__rank-label">Your rank</span>
-          <span className="ending__rank">{rank.title}</span>
+        <p className="ending__verdict" aria-hidden="true">
+          <span className="ending__version">v2.3</span>
+          <span>Blocked</span>
+        </p>
+
+        <h1 id="ending-title" ref={headingRef} tabIndex={-1} className="ending__rank">
+          <span className="ending__rank-label">Signed off as</span>
+          <span className="ending__rank-title">{rank.title}</span>
         </h1>
         <p className="ending__blurb">{rank.blurb}</p>
-        {/* aria-label on a plain <p> is ignored by screen readers, so the real score is hidden text. */}
+
         <p className="ending__score">
           <span className="visually-hidden">Total score: {total.toLocaleString()} points</span>
           <span aria-hidden="true">{shown.toLocaleString()}</span>
-          <small aria-hidden="true">pts</small>
+          <small aria-hidden="true">points</small>
         </p>
+
+        <div className="ending__actions">
+          <button className="btn btn--primary btn--big" onClick={onPlayAgain}>
+            Play again
+          </button>
+          <a className="btn btn--ghost btn--big" href={REPO_URL} target="_blank" rel="noreferrer">
+            How it was built and tested
+          </a>
+        </div>
       </div>
 
-      <dl className="stat-tiles ending__tiles">
-        <div className="stat-tile">
-          <dt>Time</dt>
-          <dd>{formatDuration(realTime)}</dd>
-        </div>
-        <div className="stat-tile">
-          <dt>Clock at finish</dt>
-          <dd className={beforeMidnight ? 'is-ok' : 'is-late'}>{gameClock(realTime)}</dd>
-        </div>
-        <div className="stat-tile">
+      <section className="receipt" aria-labelledby="receipt-title">
+        <header className="receipt__head">
+          <h2 id="receipt-title">ShopRight QA</h2>
+          <p>Release night · v2.3</p>
+          <p>
+            Shift {formatDuration(realTime)} · ended {finishedAt}
+          </p>
+        </header>
+
+        <ol className="receipt__lines">
+          {perRoom.map(({ room, base, hintPenalty, points }) => (
+            <li key={room.id}>
+              <span className="receipt__item">
+                <span className="receipt__num">{String(room.number).padStart(2, '0')}</span> {room.title}
+              </span>
+              <span className="receipt__amt">{base.toLocaleString()}</span>
+              {hintPenalty > 0 && (
+                <>
+                  <span className="receipt__item receipt__sub">
+                    {hintPenalty / 100} hint{hintPenalty > 100 ? 's' : ''}
+                  </span>
+                  <span className="receipt__amt receipt__sub">&minus;{hintPenalty}</span>
+                </>
+              )}
+              <span className="visually-hidden">: {points} points</span>
+            </li>
+          ))}
+          <li className={bonus ? undefined : 'receipt__missed'}>
+            <span className="receipt__item">Before-midnight bonus{!bonus && ' (missed)'}</span>
+            <span className="receipt__amt">{bonus ? `+${MIDNIGHT_BONUS}` : '0'}</span>
+          </li>
+        </ol>
+
+        <p className="receipt__total">
+          <span>Total</span>
+          <span>{total.toLocaleString()}</span>
+        </p>
+
+        <dl className="receipt__meta">
           <dt>Hints used</dt>
           <dd>{hintsUsed}</dd>
-        </div>
-        <div className="stat-tile">
           <dt>Bug report</dt>
           <dd>{reportScore}/100</dd>
-        </div>
-      </dl>
+          <dt>Clock at finish</dt>
+          <dd>{finishedAt}</dd>
+        </dl>
 
-      <div className="ending__grid">
-        <section className="ending__card" aria-labelledby="breakdown-title">
-          <h2 id="breakdown-title">Score breakdown</h2>
-          <ol className="breakdown">
-            {perRoom.map(({ room, base, hintPenalty, points }) => (
-              <li key={room.id}>
-                <span className="breakdown__num">{String(room.number).padStart(2, '0')}</span>
-                <span className="breakdown__title">
-                  {room.title}
-                  {hintPenalty > 0 && (
-                    <small>
-                      {base.toLocaleString()} &minus; {hintPenalty} for hints
-                    </small>
-                  )}
-                </span>
-                <span className="breakdown__pts">{points.toLocaleString()}</span>
-              </li>
-            ))}
-            <li className={bonus ? 'breakdown__bonus' : 'breakdown__bonus is-missed'}>
-              <span className="breakdown__num">★</span>
-              <span className="breakdown__title">
-                Before-midnight bonus
-                {!bonus && <small>Missed: finished after 00:00</small>}
+        <p className="receipt__thanks">Thank you for testing</p>
+        <span className="receipt__barcode" aria-hidden="true" />
+      </section>
+
+      <section className="found" aria-labelledby="found-title">
+        <h2 id="found-title">Bugs you found tonight</h2>
+        <ol className="found__list">
+          {bugs.map((room) => (
+            <li key={room.id}>
+              <span className="found__num">{String(room.number).padStart(2, '0')}</span>
+              <span className="found__text">
+                {room.debrief.bug}
+                <small>{room.skill}</small>
               </span>
-              <span className="breakdown__pts">{bonus ? `+${MIDNIGHT_BONUS}` : '0'}</span>
+              <span className={`sev sev--${room.debrief.report.severity.toLowerCase()}`}>
+                {room.debrief.report.severity}
+              </span>
             </li>
-            <li className="breakdown__total">
-              <span className="breakdown__num" />
-              <span className="breakdown__title">Total</span>
-              <span className="breakdown__pts">{total.toLocaleString()}</span>
-            </li>
-          </ol>
-        </section>
-
-        <section className="ending__card" aria-labelledby="bugs-title">
-          <h2 id="bugs-title">Bugs you found tonight</h2>
-          <ul className="found-bugs">
-            {bugs.map((room) => (
-              <li key={room.id}>
-                <span className={`chip sev sev--${room.debrief.report.severity.toLowerCase()}`}>
-                  {room.debrief.report.severity}
-                </span>
-                <span className="found-bugs__text">
-                  {room.debrief.bug}
-                  <small>{room.skill}</small>
-                </span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      </div>
-
-      <aside className="tip">
-        <h2>Last tester tip</h2>
-        <p>{rooms.find((r) => r.id === FINAL_ROOM_ID)?.debrief.testerTip}</p>
-      </aside>
-
-      <div className="ending__actions">
-        <button className="btn btn--primary btn--big" onClick={onPlayAgain}>
-          Play again <span aria-hidden="true">↻</span>
-        </button>
-        <a className="btn btn--ghost btn--big" href={REPO_URL} target="_blank" rel="noreferrer">
-          See how it was built and tested
-        </a>
-      </div>
+          ))}
+        </ol>
+        <aside className="found__tip">
+          <h3>Last note</h3>
+          <p>{rooms.find((r) => r.id === FINAL_ROOM_ID)?.debrief.testerTip}</p>
+        </aside>
+      </section>
     </article>
   );
 }

@@ -10,7 +10,7 @@ A browser game where each room is a screen of a broken web store, and each door 
 
 It's also a **QA project in its own right**: the game is tested with a test plan, 56 manual test cases, 76 automated Playwright tests (UI, API and accessibility) running in CI, and a defect log of real bugs found in the game itself.
 
-![The intro screen: a terminal shows the deploy log and a countdown to the midnight release](docs/screenshots/intro.png)
+![The intro screen: "Release Night" in large type next to a printed release checklist with red-ink notes](docs/screenshots/intro.png)
 
 ## At a glance
 
@@ -58,10 +58,12 @@ Full design, answers and API contract: [docs/game-design.md](docs/game-design.md
 | Room 2: the page says success | Room 5: only the browser says no |
 |---|---|
 | ![Product page showing "Added to cart!" while the cart badge stays at 0](docs/screenshots/room-2-console-corridor.png) | ![Checkout with 101 entered, an error message and a disabled Pay button](docs/screenshots/room-5-checkout-gate.png) |
-| **Room 6: the power's out** | **After each room: the debrief** |
-| ![A near-black page with a glowing decoy EXIT sign](docs/screenshots/room-6-dark-room.png) | ![A bug ticket with severity, steps, expected and actual results](docs/screenshots/debrief.png) |
-| **Room 7: write the bug report** | **The ending** |
-| ![The bug report scored 100/100 and accepted](docs/screenshots/room-7-release-board.png) | ![Rank "Release Blocker" with 7,300 points and a score breakdown](docs/screenshots/ending.png) |
+| **Room 6: the power's out** | **A door opens** |
+| ![A near-black page with a glowing decoy EXIT sign](docs/screenshots/room-6-dark-room.png) | ![A corridor door swung open, light spilling onto the floor, the badge reader green](docs/screenshots/unlock.png) |
+| **After each room: a printed defect report** | **Room 7: write the bug report** |
+| ![A printed defect report with a FILED stamp, form fields and the report as filed](docs/screenshots/debrief.png) | ![The bug report scored 100/100 and accepted](docs/screenshots/room-7-release-board.png) |
+| **The ending** | |
+| ![v2.3 BLOCKED, signed off as Release Blocker, with a printed score receipt](docs/screenshots/ending.png) | |
 
 ## How it's built
 

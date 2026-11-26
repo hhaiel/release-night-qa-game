@@ -67,6 +67,9 @@ await shot('room-6-dark-room');
 await openAt(4);
 await page.locator('.keypad input').fill('OVR-88-KILO');
 await page.getByRole('button', { name: 'Unlock' }).click();
+// The unlock scene (shown already open with reduced motion, for 0.7 s)
+await page.locator('.unlock').waitFor();
+await shot('unlock');
 await page.getByText(/cleared · Debrief/).waitFor({ timeout: 10000 });
 await shot('debrief');
 
@@ -94,7 +97,7 @@ await openAt(7, (p) => {
   p.currentRoom = 6;
   return p;
 });
-await page.getByRole('heading', { name: /Your rank/ }).waitFor();
+await page.getByRole('heading', { name: /^Signed off as/ }).waitFor();
 await page.waitForFunction(() => /7,300/.test(document.querySelector('.ending__score')?.textContent ?? ''));
 await shot('ending');
 

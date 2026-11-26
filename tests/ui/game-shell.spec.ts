@@ -35,7 +35,7 @@ test.describe('Game shell', () => {
 
   test('TC-GAME-004 hints decrypt one at a time and are counted @regression', async ({ game }) => {
     await game.openAtRoom(1);
-    await expect(game.hintButton()).toHaveAccessibleName(/^Decrypt hint 1\s?−100 pts$/);
+    await expect(game.hintButton()).toHaveAccessibleName(/^Open hint 1\s?−100 pts$/);
 
     await game.hintButton().click();
     await expect(game.openHints).toHaveCount(1);

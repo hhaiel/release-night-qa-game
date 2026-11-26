@@ -2,34 +2,52 @@ import { useEffect } from 'react';
 
 interface Props {
   roomNumber: number;
-  /** Big text once the door opens. Defaults to "Access granted". */
+  /** What the caption says once the door is open. Defaults to "Unlocked". */
   label?: string;
+  /** Game clock at the moment the door opened, e.g. "23:51:07". */
+  time?: string;
   onDone: () => void;
 }
 
-/** Short "access granted" animation between solving a room and its debrief. */
-export function DoorUnlock({ roomNumber, label = 'Access granted', onDone }: Props) {
+/**
+ * The door to the next room: the badge reader turns green, the door swings open, light spills
+ * into the corridor. Pure CSS (3D transform on the door); reduced motion shows it already open.
+ */
+export function DoorUnlock({ roomNumber, label = 'Unlocked', time, onDone }: Props) {
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const id = setTimeout(onDone, reduced ? 700 : 2200);
+    const id = setTimeout(onDone, reduced ? 700 : 2400);
     return () => clearTimeout(id);
   }, [onDone]);
 
+  const number = String(roomNumber).padStart(2, '0');
+
   return (
-    <div className="vault" role="status">
-      <div className="vault__light" aria-hidden="true" />
-      <div className="vault__panel vault__panel--left" aria-hidden="true" />
-      <div className="vault__panel vault__panel--right" aria-hidden="true" />
-      <div className="vault__lock" aria-hidden="true">
-        <svg viewBox="0 0 48 48" width="56" height="56">
-          <path className="vault__shackle" d="M15 22v-6a9 9 0 0 1 18 0" fill="none" strokeWidth="4" strokeLinecap="round" />
-          <rect x="10" y="22" width="28" height="20" rx="4" />
-          <circle cx="24" cy="32" r="3" className="vault__keyhole" />
-        </svg>
+    <div className="unlock" role="status">
+      <div className="unlock__scene" aria-hidden="true">
+        <div className="unlock__wall">
+          <div className="unlock__reader">
+            <span className="unlock__reader-led" />
+            <span className="unlock__reader-slot" />
+          </div>
+          <div className="unlock__frame">
+            <div className="unlock__room" />
+            <div className="unlock__door">
+              <span className="unlock__plate">{number}</span>
+              <span className="unlock__window" />
+              <span className="unlock__handle" />
+              <span className="unlock__kick" />
+            </div>
+          </div>
+        </div>
+        <div className="unlock__floor">
+          <span className="unlock__spill" />
+        </div>
       </div>
-      <p className="vault__text">
-        <span className="vault__room">Door {String(roomNumber).padStart(2, '0')}</span>
-        {label}
+      <p className="unlock__caption">
+        <span className="unlock__caption-door">Door {number}</span>
+        <span className="unlock__caption-label">{label}</span>
+        {time && <span className="unlock__caption-time">{time}</span>}
       </p>
     </div>
   );
